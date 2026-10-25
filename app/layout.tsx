@@ -20,6 +20,8 @@ export const metadata: Metadata = {
 
 const themeInit = `(function(){try{var t=localStorage.getItem('onyt-theme')||'dark';document.documentElement.setAttribute('data-theme',t);if(t==='dark'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}}catch(e){}})()`;
 
+import SmoothScrollProvider from '@/components/services/SmoothScrollProvider';
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning style={{ fontFamily: "var(--font-b, 'DM Sans', sans-serif)" }}>
@@ -28,7 +30,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <AuthProvider>
-          {children}
+          <SmoothScrollProvider>
+            {children}
+          </SmoothScrollProvider>
         </AuthProvider>
       </body>
     </html>
