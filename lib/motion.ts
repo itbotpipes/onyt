@@ -88,21 +88,36 @@ export function initMotion(): () => void {
 
   // About text word reveal
   var st = document.getElementById('st');
-  var ws = [];
-  if (st) {
-    if (!st.dataset.split) {
-      st.dataset.split = '1';
-      st.innerHTML = st.textContent.split(' ').map(function(w) { return '<span class="w">' + w + '</span>'; }).join(' ');
-    }
-    ws = st.querySelectorAll('.w');
+  var ws: HTMLElement[] = [];
+  function initWordSplit() {
+    if (!st) return;
+    var raw = (st.getAttribute('data-raw') || st.textContent || '').trim().replace(/\s+/g, ' ');
+    if (!raw) return;
+    st.setAttribute('data-raw', raw);
+    var words = raw.split(' ').filter(Boolean);
+    st.innerHTML = words.map(function(w) { return '<span class="w">' + w + '</span>'; }).join(' ');
+    ws = Array.from(st.querySelectorAll<HTMLElement>('.w'));
   }
+  initWordSplit();
 
   function sc() {
-    if (!st || !ws.length) return;
+    if (!st) return;
+    if (!ws.length) {
+      ws = Array.from(st.querySelectorAll<HTMLElement>('.w'));
+      if (!ws.length) {
+        initWordSplit();
+      }
+    }
+    if (!ws.length) return;
     var b = st.getBoundingClientRect();
-    var p = Math.max(0, Math.min(1, (innerHeight * 0.85 - b.top) / (b.height + innerHeight * 0.25)));
+    var vh = window.innerHeight || 800;
+    // Reveal begins when top of text enters at 85% of viewport
+    // Fully revealed when top of text reaches 25% of viewport
+    var start = vh * 0.85;
+    var end = vh * 0.25;
+    var p = Math.max(0, Math.min(1, (start - b.top) / (start - end)));
     for (var i = 0; i < ws.length; i++) {
-      ws[i].classList.toggle('on', i / ws.length < p);
+      ws[i].classList.toggle('on', i / ws.length <= p);
     }
   }
 
@@ -314,6 +329,20 @@ export function initMotion(): () => void {
   }
 
   addEventListener('scroll', onScroll, { passive: true });
+  var lenisOff: (() => void) | null = null;
+  if (typeof window !== 'undefined') {
+    var bindLenis = function() {
+      var l = (window as any).__lenis;
+      if (l && typeof l.on === 'function') {
+        l.on('scroll', onScroll);
+        lenisOff = function() {
+          if (typeof l.off === 'function') l.off('scroll', onScroll);
+        };
+      }
+    };
+    bindLenis();
+    setTimeout(bindLenis, 400);
+  }
   onScroll();
 
   // Subtle interactive buttons tilt
@@ -374,6 +403,7 @@ export function initMotion(): () => void {
     if (onCvResize) removeEventListener('resize', onCvResize);
     removeEventListener('resize', updateWorkLayout);
     removeEventListener('scroll', onScroll);
+    if (lenisOff) lenisOff();
     if (onMouseMove) removeEventListener('mousemove', onMouseMove);
   };
 

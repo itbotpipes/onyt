@@ -46,6 +46,10 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
     // Attach to window for any component that needs direct access
     (window as any).__lenis = lenis;
 
+    lenis.on('scroll', () => {
+      window.dispatchEvent(new Event('scroll'));
+    });
+
     let rafId: number;
     function raf(time: number) {
       lenis.raf(time);
