@@ -30,12 +30,12 @@ export interface SettingsData {
 
 const DEFAULT_SETTINGS: SettingsData = {
   branding: {
-    logo: '/logo1.png',
-    logoWhite: '/logo2.png',
-    footerLogo: '/logo2.png',
-    companyName: 'Quest For Tech',
-    siteTitle: 'Quest For Tech - Digital Solutions',
-    favicon: '/favicon1.png'
+    logo: '/logo.png',
+    logoWhite: '/logo.png',
+    footerLogo: '/logo.png',
+    companyName: 'ONYT',
+    siteTitle: 'ONYT — Performance, Brand & Digital Studio',
+    favicon: '/favicon.ico'
   },
   analytics: {
     googleAnalyticsId: '',
@@ -43,14 +43,14 @@ const DEFAULT_SETTINGS: SettingsData = {
     customHeadScripts: '',
     customBodyScripts: ''
   },
-  solutionsGridTitle: 'Twelve powerful features to help your restaurant run better',
-  solutionsGridDesc: 'Click on any feature card below to open its full specifications and details on a new page.',
+  solutionsGridTitle: 'Four disciplines engineered for sustainable scale',
+  solutionsGridDesc: 'Performance marketing, bespoke digital flagships, brand identities, and application engineering.',
   customCategories: [],
-  desktopVideoUrl: '/Digitory.mp4',
+  desktopVideoUrl: '',
   mobileVideoUrl: '/mobile.mp4',
-  contactDesktopVideoUrl: '/Digitory.mp4',
+  contactDesktopVideoUrl: '',
   contactMobileVideoUrl: '/mobile.mp4',
-  demoDesktopVideoUrl: '/Digitory.mp4',
+  demoDesktopVideoUrl: '',
   demoMobileVideoUrl: '/mobile.mp4'
 };
 

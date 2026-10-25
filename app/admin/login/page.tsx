@@ -37,19 +37,11 @@ export default function AdminLogin() {
         {/* Logo */}
         <div className="flex items-center justify-center mb-6">
           <Image
-            src="/digitory-black.png"
-            alt="Digitory Logo"
+            src="/logo.png"
+            alt="ONYT Logo"
             width={140}
             height={36}
-            className="object-contain h-8 w-auto block dark:hidden"
-            priority
-          />
-          <Image
-            src="/digitory-white.png"
-            alt="Digitory Logo"
-            width={140}
-            height={36}
-            className="object-contain h-8 w-auto hidden dark:block"
+            className="object-contain h-8 w-auto invert dark:invert-0"
             priority
           />
         </div>

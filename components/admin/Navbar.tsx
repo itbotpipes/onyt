@@ -168,8 +168,8 @@ const Navbar: React.FC<NavbarProps> = ({ className }) => {
     window.location.href = '/admin/login';
   };
 
-  const [logoBlack, setLogoBlack] = useState('/digitory-black.png');
-  const [logoWhite, setLogoWhite] = useState('/digitory-white.png');
+  const [logoBlack, setLogoBlack] = useState('/logo.png');
+  const [logoWhite, setLogoWhite] = useState('/logo.png');
 
   useEffect(() => {
     const handleBrandingSync = () => {
@@ -217,13 +217,8 @@ const Navbar: React.FC<NavbarProps> = ({ className }) => {
           <Link href="/admin/seo" className="block">
             <img
               src={logoBlack}
-              alt="Digitory Logo"
-              className="object-contain h-7 w-auto block dark:hidden"
-            />
-            <img
-              src={logoWhite}
-              alt="Digitory Logo"
-              className="object-contain h-7 w-auto hidden dark:block"
+              alt="ONYT Logo"
+              className="object-contain h-7 w-auto invert dark:invert-0"
             />
           </Link>
         </div>

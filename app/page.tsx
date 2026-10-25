@@ -13,6 +13,15 @@ import Testimonials from '@/components/Testimonials';
 import Cta from '@/components/Cta';
 import Footer from '@/components/Footer';
 import Motion from '@/components/Motion';
+import { generateSeoMetadata } from '@/lib/seo';
+import type { Metadata } from 'next';
+
+export async function generateMetadata(): Promise<Metadata> {
+  return await generateSeoMetadata('Page', 'home', {
+    title: 'ONYT — Performance, Brand & Digital Studio',
+    description: 'ONYT is a digital studio for performance marketing, branding, website and application development.',
+  });
+}
 
 export default function Home() {
   return (

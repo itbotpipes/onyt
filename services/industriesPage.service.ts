@@ -61,7 +61,7 @@ export const DEFAULT_INDUSTRIES_PAGE_DATA: IndustriesPageData = {
   hero: {
     eyebrow: "INDUSTRIES",
     title: "Digital Solutions Built Around Your Industry",
-    desc: "Every business operates differently. Your customers, buying journey, challenges, and opportunities are unique to your industry.\nAt Quest For Tech, we understand the context behind your business before building the digital strategy, experiences, and technology around it.",
+    desc: "Every business operates differently. Your customers, buying journey, challenges, and opportunities are unique to your industry.\nAt ONYT, we understand the context behind your business before building the digital strategy, experiences, and technology around it.",
     ctaText: "Explore Our Industries",
     ctaHref: "#industries-grid"
   },
@@ -143,7 +143,7 @@ export const DEFAULT_INDUSTRIES_PAGE_DATA: IndustriesPageData = {
     title: "Frequently Asked Questions",
     list: [
       {
-        question: "Which industries does Quest For Tech work with?",
+        question: "Which industries does ONYT work with?",
         answer: "We work with businesses across multiple industries, including manufacturing, healthcare, e-commerce, professional services, B2B businesses, hospitality, and other business categories."
       },
       {

@@ -29,7 +29,7 @@ const DEFAULT_PAGES: Array<Omit<PageDoc, '_id' | 'id'>> = [
     slug: 'privacy',
     status: 'Published',
     content: `1. Information We Collect
-At Quest For Tech, we collect information you provide directly to us when filling out our contact forms, scan request forms, subscribing to updates, or communicating with our team. This includes your name, email address, phone number, company name, and specific service interests.
+At ONYT, we collect information you provide directly to us when filling out our contact forms, scan request forms, subscribing to updates, or communicating with our team. This includes your name, email address, phone number, company name, and specific service interests.
 
 2. How We Use Your Information
 We use the information we collect to:
@@ -45,26 +45,26 @@ We employ industry-standard administrative, technical, and physical security mea
 We do not sell, trade, or rent your personal data to third parties. We may share information with trusted service providers who assist in operating our website and conducting our business under confidentiality agreements.
 
 5. Your Rights & Choices
-You may request access to, correction of, or deletion of your personal data at any time by reaching out to our team at support@questfortech.com.`
+You may request access to, correction of, or deletion of your personal data at any time by reaching out to our team at hello@onyt.com.`
   },
   {
     title: 'Terms of Service',
     slug: 'terms',
     status: 'Published',
     content: `1. Acceptance of Terms
-By accessing or using the Quest For Tech website and associated services, you agree to be bound by these Terms of Service and our Privacy Policy. If you do not agree, please do not use our services.
+By accessing or using the ONYT website and associated services, you agree to be bound by these Terms of Service and our Privacy Policy. If you do not agree, please do not use our services.
 
 2. Intellectual Property
-All content, features, designs, graphics, branding, and code provided on this website are the intellectual property of Quest For Tech and are protected by applicable copyright, trademark, and trade dress laws.
+All content, features, designs, graphics, branding, and code provided on this website are the intellectual property of ONYT and are protected by applicable copyright, trademark, and trade dress laws.
 
 3. Service Scope & Engagements
-Project deliverables, timelines, milestones, and payment schedules for custom engineering, marketing, SEO, and development work are governed by individual master service agreements and statements of work executed between the client and Quest For Tech.
+Project deliverables, timelines, milestones, and payment schedules for custom engineering, marketing, SEO, and development work are governed by individual master service agreements and statements of work executed between the client and ONYT.
 
 4. Limitation of Liability
-Quest For Tech shall not be liable for any indirect, incidental, consequential, or punitive damages arising out of or related to your access to or inability to access our services.
+ONYT shall not be liable for any indirect, incidental, consequential, or punitive damages arising out of or related to your access to or inability to access our services.
 
 5. Contact Us
-For questions regarding these Terms of Service, please contact us at support@questfortech.com.`
+For questions regarding these Terms of Service, please contact us at hello@onyt.com.`
   }
 ];
 

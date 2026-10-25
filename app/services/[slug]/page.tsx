@@ -2,6 +2,7 @@ import React from 'react';
 import SolutionDetailTemplate from '@/components/services/detail/SolutionDetailTemplate';
 import { getSolutionDetailData } from '@/components/services/detail/solutionData';
 import { Metadata } from 'next';
+import { generateSeoMetadata } from '@/lib/seo';
 
 interface RouteProps {
   params: Promise<{ slug: string }>;
@@ -13,7 +14,7 @@ export async function generateMetadata({ params }: RouteProps): Promise<Metadata
 
   const cleanTitle = data.heroTitleLines ? data.heroTitleLines.join(' ') : 'Website Development';
 
-  return {
+  return await generateSeoMetadata('Solution', slug, {
     title: `${cleanTitle} | ONYT Studio`,
     description: data.intro,
     openGraph: {
@@ -21,7 +22,7 @@ export async function generateMetadata({ params }: RouteProps): Promise<Metadata
       description: data.intro,
       type: 'website',
     },
-  };
+  });
 }
 
 export async function generateStaticParams() {

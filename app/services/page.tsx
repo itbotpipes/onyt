@@ -12,17 +12,6 @@ import FinalCTA from '@/components/services/FinalCTA';
 import Footer from '@/components/Footer';
 import CustomCursor from '@/components/services/CustomCursor';
 
-export const metadata: Metadata = {
-  title: 'Digital Services & Solutions | ONYT',
-  description:
-    'Strategy, creativity, technology and data — brought together to help your business grow. Explore Website Development, SEO, Content, Performance Marketing, and Custom Development.',
-  openGraph: {
-    title: 'Digital Services & Solutions | ONYT',
-    description: 'Ideas to Impact. Strategy-led solutions that work together to create real business impact.',
-    type: 'website',
-  },
-};
-
 export const dynamic = 'force-dynamic';
 
 export default function ServicesPage() {

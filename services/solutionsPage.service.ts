@@ -51,7 +51,7 @@ export const DEFAULT_SOLUTIONS_PAGE_DATA: SolutionsPageData = {
   hero: {
     eyebrow: "Digital Solutions & Services",
     title: "The Right Strategy. The Right Technology. The Right Execution.",
-    desc: "From building your digital foundation to improving search visibility, generating qualified leads, and engineering custom technology — Quest For Tech brings strategy, creativity, marketing, and data together to create compounding growth.",
+    desc: "From building your digital foundation to improving search visibility, generating qualified leads, and engineering custom technology — ONYT brings strategy, creativity, marketing, and data together to create compounding growth.",
     ctaPrimaryText: "LET'S TALK →",
     ctaPrimaryHref: "/contact",
     ctaSecondaryText: "EXPLORE SOLUTIONS ↓",
@@ -134,7 +134,7 @@ export const DEFAULT_SOLUTIONS_PAGE_DATA: SolutionsPageData = {
     ]
   },
   whyUs: {
-    badge: "Why Quest For Tech",
+    badge: "Why ONYT",
     title: "Built around outcomes, not outputs.",
     desc: "We don't measure success by deliverable checklists. We measure success by the impact we create for your business.",
     pillars: [
