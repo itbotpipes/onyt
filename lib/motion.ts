@@ -4,7 +4,7 @@ export function initMotion(): void {
   if (window.__onyt) return;
   window.__onyt = true;
 var r=document.documentElement,ic=document.getElementById('ico'),mo="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z",su="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zM11 1h2v3h-2zM11 20h2v3h-2zM1 11h3v2H1zM20 11h3v2h-3z";
-function set(t){r.setAttribute('data-theme',t);if(ic)ic.setAttribute('d',t==='dark'?su:mo);try{localStorage.setItem('onyt-theme',t)}catch(e){}}
+function set(t){r.setAttribute('data-theme',t);r.classList.toggle('dark',t==='dark');if(ic)ic.setAttribute('d',t==='dark'?su:mo);try{localStorage.setItem('onyt-theme',t)}catch(e){}}
 var s=null;try{s=localStorage.getItem('onyt-theme')}catch(e){}set(s||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'));
 var tog=document.getElementById('tog');if(tog){tog.onclick=function(){set(r.getAttribute('data-theme')==='dark'?'light':'dark')}};
 var it=['Performance Marketing','Branding','Website Development','Application Development'],h='';for(var i=0;i<4;i++)it.forEach(function(t){h+='<span>'+t+'</span><b>✦</b>'});document.getElementById('mq').innerHTML=h;

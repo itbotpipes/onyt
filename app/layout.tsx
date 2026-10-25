@@ -7,9 +7,18 @@ import { AuthProvider } from '@/providers/AuthProvider';
 export const metadata: Metadata = {
   title: 'ONYT — Performance, Brand & Digital Studio',
   description: 'ONYT is a digital studio for performance marketing, branding, website and application development.',
+  icons: {
+    icon: [
+      { url: '/ONYT-06.png', type: 'image/png' },
+      { url: '/favicon.png', type: 'image/png' },
+      { url: '/favicon.ico' },
+    ],
+    shortcut: '/ONYT-06.png',
+    apple: '/ONYT-06.png',
+  },
 };
 
-const themeInit = `(function(){try{var t=localStorage.getItem('onyt-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');document.documentElement.setAttribute('data-theme',t)}catch(e){}})()`;
+const themeInit = `(function(){try{var t=localStorage.getItem('onyt-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');document.documentElement.setAttribute('data-theme',t);if(t==='dark'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}}catch(e){}})()`;
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (

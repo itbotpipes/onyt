@@ -1,5 +1,154 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant dark (&:where(.dark, .dark *, [data-theme="dark"], [data-theme="dark"] *));
 
-/* Scoped tailwind utilities and base overrides */
+/* Design tokens for admin UI components */
+:root {
+  --background: #f8fafc;
+  --foreground: #09090b;
+  --card: #ffffff;
+  --card-foreground: #09090b;
+  --popover: #ffffff;
+  --popover-foreground: #09090b;
+  --primary: #18181b;
+  --primary-foreground: #fafafa;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #18181b;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --accent: #f4f4f5;
+  --accent-foreground: #18181b;
+  --destructive: #ef4444;
+  --destructive-foreground: #fafafa;
+  --border: #e4e4e7;
+  --input: #e4e4e7;
+  --ring: #18181b;
+}
+
+.dark,
+[data-theme="dark"] {
+  --background: #09090b;
+  --foreground: #fafafa;
+  --card: #121214;
+  --card-foreground: #fafafa;
+  --popover: #121214;
+  --popover-foreground: #fafafa;
+  --primary: #fafafa;
+  --primary-foreground: #18181b;
+  --secondary: #27272a;
+  --secondary-foreground: #fafafa;
+  --muted: #27272a;
+  --muted-foreground: #a1a1aa;
+  --accent: #27272a;
+  --accent-foreground: #fafafa;
+  --destructive: #7f1d1d;
+  --destructive-foreground: #fafafa;
+  --border: #27272a;
+  --input: #27272a;
+  --ring: #d4d4d8;
+}
+
+/* Ensure all inputs, textareas, and selects always have crisp, visible text */
+.admin-shell input,
+.admin-shell textarea,
+.admin-shell select,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+input[type="url"],
+input[type="tel"] {
+  color: #09090b;
+}
+
+.dark .admin-shell input,
+.dark .admin-shell textarea,
+.dark .admin-shell select,
+[data-theme="dark"] .admin-shell input,
+[data-theme="dark"] .admin-shell textarea,
+[data-theme="dark"] .admin-shell select,
+.dark input[type="text"],
+.dark input[type="email"],
+.dark input[type="password"],
+.dark input[type="number"],
+.dark input[type="search"],
+.dark input[type="url"],
+.dark input[type="tel"],
+[data-theme="dark"] input[type="text"],
+[data-theme="dark"] input[type="email"],
+[data-theme="dark"] input[type="password"],
+[data-theme="dark"] input[type="number"],
+[data-theme="dark"] input[type="search"],
+[data-theme="dark"] input[type="url"],
+[data-theme="dark"] input[type="tel"] {
+  color: #fafafa;
+}
+
+/* Placeholder styling */
+input::placeholder,
+textarea::placeholder {
+  color: #71717a !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder,
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: #a1a1aa !important;
+}
+
+/* Admin shell typography & contrast guarantees */
+.admin-shell {
+  color: #09090b;
+}
+
+.dark .admin-shell,
+[data-theme="dark"] .admin-shell {
+  color: #fafafa;
+}
+
+/* Tables in admin panel */
+.admin-shell table th {
+  color: #71717a;
+}
+
+.dark .admin-shell table th,
+[data-theme="dark"] .admin-shell table th {
+  color: #a1a1aa;
+}
+
+.admin-shell table td {
+  color: #09090b;
+}
+
+.dark .admin-shell table td,
+[data-theme="dark"] .admin-shell table td {
+  color: #f4f4f5;
+}
+
+/* Rich Text Editor (ProseMirror) */
+.ProseMirror {
+  color: #09090b !important;
+}
+
+.dark .ProseMirror,
+[data-theme="dark"] .ProseMirror {
+  color: #fafafa !important;
+}
+
+/* Custom scrollbars */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(161, 161, 170, 0.3);
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(161, 161, 170, 0.5);
+}

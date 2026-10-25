@@ -15,13 +15,13 @@ export default function Options({ className }: OptionsProps) {
   const [loading, setLoading] = useState(true);
   
   // Settings variables
-  const [logoBlackUrl, setLogoBlackUrl] = useState('/digitory-black.png');
-  const [logoWhiteUrl, setLogoWhiteUrl] = useState('/digitory-white.png');
-  const [logoFooterUrl, setLogoFooterUrl] = useState('/digitory-white.png');
-  const [companyName, setCompanyName] = useState('Digitory');
-  const [siteTitle, setSiteTitle] = useState('Digitory - Restaurant Operating System');
-  const [faviconUrl, setFaviconUrl] = useState('/favicon.ico');
-  const [desktopVideoUrl, setDesktopVideoUrl] = useState('/Digitory.mp4');
+  const [logoBlackUrl, setLogoBlackUrl] = useState('/logo.png');
+  const [logoWhiteUrl, setLogoWhiteUrl] = useState('/logo.png');
+  const [logoFooterUrl, setLogoFooterUrl] = useState('/logo.png');
+  const [companyName, setCompanyName] = useState('ONYT');
+  const [siteTitle, setSiteTitle] = useState('ONYT — Performance, Brand & Digital Studio');
+  const [faviconUrl, setFaviconUrl] = useState('/ONYT-06.png');
+  const [desktopVideoUrl, setDesktopVideoUrl] = useState('/mobile.mp4');
   const [mobileVideoUrl, setMobileVideoUrl] = useState('/mobile.mp4');
   const [contactDesktopVideoUrl, setContactDesktopVideoUrl] = useState('/Digitory.mp4');
   const [contactMobileVideoUrl, setContactMobileVideoUrl] = useState('/mobile.mp4');
@@ -222,7 +222,7 @@ export default function Options({ className }: OptionsProps) {
             </div>
             
             <div className="h-16 w-full flex items-center justify-center bg-white rounded-xl border border-zinc-150 p-2 shadow-xs">
-              <img src={logoBlackUrl} alt="Light Mode Logo Preview" className="h-7 max-w-full object-contain" onError={(e) => { e.currentTarget.src = '/digitory-black.png'; }} />
+              <img src={logoBlackUrl} alt="Light Mode Logo Preview" className="h-7 max-w-full object-contain" onError={(e) => { e.currentTarget.src = '/logo.png'; }} />
             </div>
 
             <label className="flex items-center justify-center gap-2 border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-zinc-900/50 dark:hover:border-zinc-100/50 px-3 py-2.5 rounded-xl cursor-pointer hover:bg-white dark:hover:bg-zinc-900 transition-colors text-xs font-semibold">
@@ -240,7 +240,7 @@ export default function Options({ className }: OptionsProps) {
             </div>
 
             <div className="h-16 w-full flex items-center justify-center bg-zinc-900 rounded-xl border border-zinc-800 p-2 shadow-xs">
-              <img src={logoWhiteUrl} alt="Dark Mode Logo Preview" className="h-7 max-w-full object-contain" onError={(e) => { e.currentTarget.src = '/digitory-white.png'; }} />
+              <img src={logoWhiteUrl} alt="Dark Mode Logo Preview" className="h-7 max-w-full object-contain" onError={(e) => { e.currentTarget.src = '/logo.png'; }} />
             </div>
 
             <label className="flex items-center justify-center gap-2 border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-zinc-900/50 dark:hover:border-zinc-100/50 px-3 py-2.5 rounded-xl cursor-pointer hover:bg-white dark:hover:bg-zinc-900 transition-colors text-xs font-semibold">
@@ -258,7 +258,7 @@ export default function Options({ className }: OptionsProps) {
             </div>
 
             <div className="h-16 w-full flex items-center justify-center bg-[#0B0C0E] rounded-xl border border-zinc-800 p-2 shadow-xs">
-              <img src={logoFooterUrl} alt="Footer Logo Preview" className="h-7 max-w-full object-contain" onError={(e) => { e.currentTarget.src = '/digitory-white.png'; }} />
+              <img src={logoFooterUrl} alt="Footer Logo Preview" className="h-7 max-w-full object-contain" onError={(e) => { e.currentTarget.src = '/logo.png'; }} />
             </div>
 
             <label className="flex items-center justify-center gap-2 border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-zinc-900/50 dark:hover:border-zinc-100/50 px-3 py-2.5 rounded-xl cursor-pointer hover:bg-white dark:hover:bg-zinc-900 transition-colors text-xs font-semibold">
@@ -275,8 +275,8 @@ export default function Options({ className }: OptionsProps) {
             <input
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 text-sm focus:outline-none focus:ring-1 focus:ring-zinc-900 dark:focus:ring-zinc-100"
-              placeholder="Digitory"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm focus:outline-none focus:ring-1 focus:ring-zinc-900 dark:focus:ring-zinc-100"
+              placeholder="ONYT"
             />
           </div>
 
@@ -285,8 +285,8 @@ export default function Options({ className }: OptionsProps) {
             <input
               value={siteTitle}
               onChange={(e) => setSiteTitle(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 text-sm focus:outline-none focus:ring-1 focus:ring-zinc-900 dark:focus:ring-zinc-100"
-              placeholder="Digitory - Restaurant Operating System"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm focus:outline-none focus:ring-1 focus:ring-zinc-900 dark:focus:ring-zinc-100"
+              placeholder="ONYT — Performance, Brand & Digital Studio"
             />
           </div>
 
@@ -294,7 +294,7 @@ export default function Options({ className }: OptionsProps) {
             <label className="block text-xs font-bold uppercase tracking-wide text-zinc-500 font-semibold">Favicon Icon URL</label>
             <div className="flex gap-2">
               <div className="h-10 w-10 flex items-center justify-center bg-zinc-50 dark:bg-zinc-950/20 rounded-xl border border-zinc-205 p-2 shrink-0">
-                <img src={faviconUrl} alt="Favicon Preview" className="h-6 w-6 object-contain" onError={(e) => { e.currentTarget.src = '/favicon.ico'; }} />
+                <img src={faviconUrl} alt="Favicon Preview" className="h-6 w-6 object-contain" onError={(e) => { e.currentTarget.src = '/ONYT-06.png'; }} />
               </div>
               <input
                 value={faviconUrl}

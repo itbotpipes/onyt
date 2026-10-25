@@ -348,7 +348,7 @@ export default function SeoManagementPage() {
                               if (globalIdx !== -1) setSelectedPageIndex(globalIdx);
                               openEditor(page);
                             }}
-                            className={`text-xs font-bold transition-colors ${editing?._id === page._id ? 'text-zinc-900 dark:text-white' : 'text-zinc-450 hover:text-zinc-900 dark:hover:text-white font-extrabold border border-zinc-200 dark:border-zinc-800 px-3 py-1.5 rounded-xl bg-white dark:bg-zinc-900 shadow-xs'}`}
+                            className={`text-xs font-bold transition-colors ${editing?._id === page._id ? 'text-zinc-900 dark:text-white' : 'text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white font-extrabold border border-zinc-200 dark:border-zinc-800 px-3 py-1.5 rounded-xl bg-white dark:bg-zinc-900 shadow-xs'}`}
                           >
                             {editing?._id === page._id ? 'Editing ›' : 'Edit SEO'}
                           </button>
@@ -439,9 +439,9 @@ export default function SeoManagementPage() {
                     {activeTab === 'preview' && (
                       <div className="space-y-4 text-left">
                         <div className="bg-zinc-50 dark:bg-zinc-900 p-4 rounded-xl shadow-xs border border-zinc-150 dark:border-zinc-800">
-                          <p className="text-[10px] text-zinc-400 font-mono mb-1 leading-none">https://digitory.io{editing.url || `/${editing.slug}`}</p>
+                          <p className="text-[10px] text-zinc-400 font-mono mb-1 leading-none">https://onyt.studio{editing.url || `/${editing.slug}`}</p>
                           <h3 className="text-blue-700 dark:text-blue-400 font-semibold text-sm truncate hover:underline leading-tight">{form.title || editing.name}</h3>
-                          <p className="text-xs text-zinc-655 dark:text-zinc-400 line-clamp-2 mt-1 leading-relaxed">{form.description || 'Provide meta description'}</p>
+                          <p className="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-2 mt-1 leading-relaxed">{form.description || 'Provide meta description'}</p>
                         </div>
                       </div>
                     )}
