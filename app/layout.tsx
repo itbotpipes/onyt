@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   },
 };
 
-const themeInit = `(function(){try{var t=localStorage.getItem('onyt-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');document.documentElement.setAttribute('data-theme',t);if(t==='dark'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}}catch(e){}})()`;
+const themeInit = `(function(){try{var t=localStorage.getItem('onyt-theme')||'dark';document.documentElement.setAttribute('data-theme',t);if(t==='dark'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}}catch(e){}})()`;
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (

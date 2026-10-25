@@ -4,9 +4,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-
-const SUN_PATH = "M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zM11 1h2v3h-2zM11 20h2v3h-2zM1 11h3v2H1zM20 11h3v2h-3z";
-const MOON_PATH = "M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z";
+import { Sun, Moon } from 'lucide-react';
 
 const NAV_ITEMS = [
   { label: 'Services', href: '/services', match: (p: string) => p.startsWith('/services') },
@@ -18,9 +16,32 @@ const NAV_ITEMS = [
 export default function Nav() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const [mounted, setMounted] = useState(false);
 
   const nvRef = useRef<HTMLDivElement>(null);
   const niRef = useRef<HTMLElement>(null);
+
+  // Sync theme with document state on mount
+  useEffect(() => {
+    setMounted(true);
+    const active = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    setTheme(active);
+  }, []);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(nextTheme);
+    document.documentElement.setAttribute('data-theme', nextTheme);
+    if (nextTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    try {
+      localStorage.setItem('onyt-theme', nextTheme);
+    } catch (e) {}
+  };
 
   // Close mobile drawer on route change
   useEffect(() => {
@@ -38,8 +59,6 @@ export default function Nav() {
     document.body.classList.remove('mo');
     setIsMenuOpen(false);
   };
-
-
 
   // Indicator sliding logic
   const moveIndicator = (targetEl: HTMLElement | null) => {
@@ -100,6 +119,21 @@ export default function Nav() {
         </div>
 
         <div className="nr">
+          <button
+            id="tog"
+            className="tog"
+            aria-label="Toggle theme"
+            type="button"
+            onClick={toggleTheme}
+            title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {(!mounted || theme === 'dark') ? (
+              <Sun size={18} strokeWidth={2.2} />
+            ) : (
+              <Moon size={18} strokeWidth={2.2} />
+            )}
+          </button>
+
           <Link className="btn nbt" href="/contact">
             Let’s talk ↗
           </Link>
@@ -130,7 +164,21 @@ export default function Nav() {
             </Link>
           ))}
         </div>
-        <div className="mf">hello@onyt.com</div>
+        <div className="mf flex items-center justify-between">
+          <span>hello@onyt.com</span>
+          <button
+            onClick={toggleTheme}
+            className="tog"
+            aria-label="Toggle theme"
+            type="button"
+          >
+            {(!mounted || theme === 'dark') ? (
+              <Sun size={18} strokeWidth={2.2} />
+            ) : (
+              <Moon size={18} strokeWidth={2.2} />
+            )}
+          </button>
+        </div>
       </div>
     </>
   );
