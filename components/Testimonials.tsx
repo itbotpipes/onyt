@@ -53,7 +53,6 @@ export default function Testimonials() {
     <section id="testimonials" className="ts-sec">
       <div className="hd rv">
         <div>
-          <div className="ey">Testimonials</div>
           <h2>What our partners say.</h2>
         </div>
         <p>Direct perspectives from founders, CMOs, and product leaders who build and scale with ONYT.</p>

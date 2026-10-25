@@ -4,7 +4,6 @@ export default function About() {
     <section id="about" className="relative py-24 sm:py-32 lg:py-40 border-b border-[var(--ln)] overflow-hidden">
       <div className="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16">
         <div className="in">
-          <div className="ey rv">About ONYT</div>
           <p className="st" id="st">
             We are a team of marketers, designers and engineers working as one. We plan the strategy, craft the brand, build the product and run the media, so every rupee spent turns into measurable growth.
           </p>

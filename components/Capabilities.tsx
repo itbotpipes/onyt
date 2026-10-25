@@ -41,52 +41,20 @@ const CAPABILITIES: Capability[] = [
   },
 ];
 
-const TECH_ITEMS_1 = [
-  'Meta Ads',
-  'Google Ads 360',
-  'TikTok Ads',
-  'GA4 & BigQuery',
-  'Klaviyo',
-  'Figma',
-  'After Effects',
-  'Shopify Plus',
-  'Webflow',
-  'HubSpot',
-  'PostHog',
-];
-
-const TECH_ITEMS_2 = [
-  'Next.js 15',
-  'React',
-  'TypeScript',
-  'TailwindCSS',
-  'Node.js',
-  'Python',
-  'PostgreSQL',
-  'GraphQL',
-  'Docker',
-  'AWS',
-  'Vercel',
-  'Flutter',
-];
-
 export default function Capabilities() {
   return (
-    <section id="caps" className="caps-sec">
-      <div className="hd rv">
-        <div>
-          <div className="ey">Capabilities</div>
-          <h2>Everything under one roof.</h2>
-        </div>
-        <p>Specialists across growth, design and engineering, operating as a synchronized high-velocity engine.</p>
+    <section className="caps-sec" id="capabilities">
+      <div className="rv">
+        <h2>Engineered for compound growth & category leadership.</h2>
       </div>
 
       <div className="caps-list">
         {CAPABILITIES.map((cap) => (
-          <Link 
-            key={cap.num} 
+          <Link
+            key={cap.num}
             href={cap.href}
-            className="caps-row rv"
+            className="caps-row"
+            aria-label={`${cap.title} services`}
           >
             <div className="caps-row-left">
               <span className="caps-num">{cap.num}</span>
@@ -111,25 +79,57 @@ export default function Capabilities() {
         ))}
       </div>
 
-      <div className="caps-tech">
-        <div className="caps-tech-meta">
-          <span className="rec"></span>
-          <span>Engineered with modern tools & infrastructure</span>
-        </div>
-
-        <div className="tk">
-          <div>
-            {TECH_ITEMS_1.map((item, i) => (
-              <span key={i}>{item}</span>
-            ))}
+      {/* Compact Studio Telemetry & Impact Strip */}
+      <div className="caps-strip">
+        <div className="caps-strip-top">
+          <div className="strip-live-badge">
+            <span className="live-ping-dot"></span>
+            <span>Live Studio Telemetry & Global Deployments</span>
+          </div>
+          <div className="strip-status">
+            <span>Sprint 26 Active</span>
+            <span className="strip-divider">/</span>
+            <span>100% In-House</span>
+            <span className="strip-divider">/</span>
+            <span className="status-live-text">All Systems Operational</span>
           </div>
         </div>
 
-        <div className="tk rv2">
-          <div>
-            {TECH_ITEMS_2.map((item, i) => (
-              <span key={i}>{item}</span>
-            ))}
+        <div className="caps-strip-grid">
+          <div className="strip-col">
+            <div className="strip-stat-row">
+              <span className="strip-val">14+</span>
+              <span className="strip-pill">EMEA · APAC · US</span>
+            </div>
+            <div className="strip-label">Global Markets Active</div>
+            <div className="strip-sub">Sub-100ms first paint worldwide</div>
+          </div>
+
+          <div className="strip-col">
+            <div className="strip-stat-row">
+              <span className="strip-val">&lt; 14d</span>
+              <span className="strip-pill pill-accent">Guaranteed</span>
+            </div>
+            <div className="strip-label">Concept to Production</div>
+            <div className="strip-sub">High-tempo sprints, zero agency fluff</div>
+          </div>
+
+          <div className="strip-col">
+            <div className="strip-stat-row">
+              <span className="strip-val">99.98%</span>
+              <span className="strip-pill pill-green">SLA Uptime</span>
+            </div>
+            <div className="strip-label">Production SLA Uptime</div>
+            <div className="strip-sub">Zero-downtime automated CI/CD</div>
+          </div>
+
+          <div className="strip-col">
+            <div className="strip-stat-row">
+              <span className="strip-val">99+</span>
+              <span className="strip-pill pill-green">CWV Score</span>
+            </div>
+            <div className="strip-label">Lighthouse Performance</div>
+            <div className="strip-sub">Sub-second LCP &amp; 0ms layout shift</div>
           </div>
         </div>
       </div>

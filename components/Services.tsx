@@ -7,7 +7,6 @@ export default function Services() {
       <section id="services" style={{paddingTop:'0'}}>
         <div className="hd rv">
           <div>
-            <div className="ey">Services</div>
             <h2>Four disciplines. One growth engine.</h2>
           </div>
           <div style={{display:'flex',flexDirection:'column',gap:'12px',alignItems:'flex-start'}}>

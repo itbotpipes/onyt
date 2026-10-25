@@ -20,6 +20,14 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
     if (isAdmin) return;
     if (typeof window === 'undefined') return;
 
+    if (pathname && pathname !== '/') {
+      document.body.classList.add('ld');
+      (window as any).__onytPreloaded = true;
+      try {
+        sessionStorage.setItem('onyt_preloaded', 'true');
+      } catch (e) {}
+    }
+
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 

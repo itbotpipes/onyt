@@ -18,9 +18,20 @@ export default function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [mounted, setMounted] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const nvRef = useRef<HTMLDivElement>(null);
   const niRef = useRef<HTMLElement>(null);
+
+  // Track scroll position to activate ambient header blur
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Sync theme with document state on mount
   useEffect(() => {
@@ -90,7 +101,7 @@ export default function Nav() {
 
   return (
     <>
-      <nav className="nb" id="nb">
+      <nav className={`nb ${isScrolled ? 'scrolled' : ''}`} id="nb">
         <Link className="nbl" href="/" aria-label="ONYT Home">
           <img className="logo" alt="ONYT" src="/logo.png" />
         </Link>

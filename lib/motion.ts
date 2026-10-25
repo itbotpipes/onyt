@@ -1,27 +1,99 @@
 // @ts-nocheck
 // Scroll, cursor, theme, counters and canvas animations (optimized for 60/120fps silky smooth scrolling).
-export function initMotion(): void {
-  if (window.__onyt) return;
-  window.__onyt = true;
+export function initMotion(): () => void {
+  // If there's an existing instance running, clean it up first
+  if (typeof window !== 'undefined' && window.__onytCleanup) {
+    try {
+      window.__onytCleanup();
+    } catch (e) {
+      console.warn('Error during motion cleanup:', e);
+    }
+    window.__onytCleanup = null;
+  }
 
-  var r = document.documentElement;
-  var it = ['Performance Marketing', 'Branding', 'Website Development', 'Application Development'], h = '';
-  for (var i = 0; i < 4; i++) it.forEach(function(t) { h += '<span>' + t + '</span><b>✦</b>'; });
+  // Preloader
+  var pl = document.querySelector('.pl') as HTMLElement | null;
+  var pc = document.getElementById('pc');
+  var alreadyLoaded = false;
+  try {
+    alreadyLoaded = document.body.classList.contains('ld') || Boolean(window.__onytPreloaded || sessionStorage.getItem('onyt_preloaded'));
+  } catch (e) {
+    alreadyLoaded = document.body.classList.contains('ld') || Boolean(window.__onytPreloaded);
+  }
+
+  if (pl) {
+    if (alreadyLoaded) {
+      // Dismiss immediately without animation delay if returning from another page
+      pl.style.display = 'none';
+      pl.style.pointerEvents = 'none';
+      document.body.classList.add('ld');
+    } else {
+      window.__onytPreloaded = true;
+      try { sessionStorage.setItem('onyt_preloaded', 'true'); } catch (e) {}
+
+      var a0 = performance.now();
+      var finished = false;
+      var preloaderRafId = 0;
+
+      var dismissPreloader = function() {
+        if (finished) return;
+        finished = true;
+        if (preloaderRafId) cancelAnimationFrame(preloaderRafId);
+        if (pl) {
+          pl.classList.add('out');
+          setTimeout(function() {
+            if (pl) {
+              pl.style.display = 'none';
+              pl.style.pointerEvents = 'none';
+            }
+          }, 1100);
+        }
+        document.body.classList.add('ld');
+      };
+
+      (function f(n) {
+        if (finished) return;
+        var k = Math.min(1, (n - a0) / 1000);
+        if (pc) pc.textContent = Math.round(k * 100) + '%';
+        if (k < 1) {
+          preloaderRafId = requestAnimationFrame(f);
+        } else {
+          dismissPreloader();
+        }
+      })(a0);
+
+      // Failsafe timer (maximum 1.6s): user will never ever be stuck on 0%
+      setTimeout(dismissPreloader, 1600);
+    }
+  } else {
+    document.body.classList.add('ld');
+  }
+
+  // Marquee
   var mq = document.getElementById('mq');
-  if (mq) mq.innerHTML = h;
+  if (mq && !mq.dataset.ready) {
+    mq.dataset.ready = '1';
+    var it = ['Performance Marketing', 'Branding', 'Website Development', 'Application Development'], h = '';
+    for (var i = 0; i < 4; i++) it.forEach(function(t) { h += '<span>' + t + '</span><b>✦</b>'; });
+    mq.innerHTML = h;
+  }
 
+  // Kolkata live clock
   var tc = document.getElementById('tc');
   function ck() {
     if (tc) tc.textContent = new Date().toLocaleTimeString('en-GB', { timeZone: 'Asia/Kolkata' });
   }
   ck();
-  setInterval(ck, 1000);
+  var clockInterval = setInterval(ck, 1000);
 
   // About text word reveal
   var st = document.getElementById('st');
   var ws = [];
   if (st) {
-    st.innerHTML = st.textContent.split(' ').map(function(w) { return '<span class="w">' + w + '</span>'; }).join(' ');
+    if (!st.dataset.split) {
+      st.dataset.split = '1';
+      st.innerHTML = st.textContent.split(' ').map(function(w) { return '<span class="w">' + w + '</span>'; }).join(' ');
+    }
     ws = st.querySelectorAll('.w');
   }
 
@@ -36,7 +108,7 @@ export function initMotion(): void {
 
   // Number counting on intersection
   function cnt(n) {
-    var to = parseFloat(n.dataset.n), sf = n.dataset.s, d = to % 1 ? 1 : 0, a = performance.now();
+    var to = parseFloat(n.dataset.n), sf = n.dataset.s || '', d = to % 1 ? 1 : 0, a = performance.now();
     (function f(t) {
       var k = Math.min(1, (t - a) / 1700);
       n.textContent = (to * (1 - Math.pow(1 - k, 3))).toFixed(d) + sf;
@@ -57,16 +129,15 @@ export function initMotion(): void {
 
   document.querySelectorAll('.rv').forEach(function(e) { io.observe(e); });
 
-  // Custom magnetic cursor (hardware accelerated)
-  var c = document.querySelector('.cur');
+  // Custom magnetic cursor
+  var onMouseMove = null;
+  var c = document.querySelector('.cur') as HTMLElement | null;
   if (c) {
-    var mouseX = 0, mouseY = 0;
-    addEventListener('mousemove', function(e) {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
+    onMouseMove = function(e: MouseEvent) {
       c.style.opacity = '1';
-      c.style.transform = 'translate3d(' + mouseX + 'px,' + mouseY + 'px,0) translate(-50%,-50%)';
-    }, { passive: true });
+      c.style.transform = 'translate3d(' + e.clientX + 'px,' + e.clientY + 'px,0) translate(-50%,-50%)';
+    };
+    addEventListener('mousemove', onMouseMove, { passive: true });
 
     document.querySelectorAll('a,button,.sc,.pj').forEach(function(e) {
       e.addEventListener('mouseenter', function() { c.style.width = c.style.height = '50px'; });
@@ -74,26 +145,10 @@ export function initMotion(): void {
     });
   }
 
-  // Preloader
-  var pl = document.querySelector('.pl'), pc = document.getElementById('pc'), a0 = performance.now();
-  (function f(n) {
-    var k = Math.min(1, (n - a0) / 1500);
-    if (pc) pc.textContent = Math.round(k * 100) + '%';
-    if (k < 1) requestAnimationFrame(f);
-    else {
-      if (pl) {
-        pl.classList.add('out');
-        setTimeout(function() {
-          if (pl) { pl.style.display = 'none'; pl.style.pointerEvents = 'none'; }
-        }, 1200);
-      }
-      document.body.classList.add('ld');
-    }
-  })(a0);
-  setTimeout(function() { document.body.classList.add('ld'); }, 3500);
-
   // Animated headings
   document.querySelectorAll('.hd h2,.ctx h2').forEach(function(h) {
+    if (h.dataset.split) return;
+    h.dataset.split = '1';
     var i = 0;
     h.innerHTML = h.textContent.split(' ').map(function(w) {
       return '<span class="sw"><i style="transition-delay:' + (i++ * 0.06) + 's">' + w + '</i></span>';
@@ -106,30 +161,33 @@ export function initMotion(): void {
   });
 
   // Hero interactive canvas background with visibility pause
-  var cv = document.getElementById('cv');
+  var cv = document.getElementById('cv') as HTMLCanvasElement | null;
   var cx = cv ? cv.getContext('2d') : null;
   var W = 0, H = 0, mx = 0.5, my = 0.5;
   var cvVisible = true;
+  var cvObserver: IntersectionObserver | null = null;
+  var cvRafId = 0;
+  var onCvResize: (() => void) | null = null;
 
   if (cv && cx) {
-    function rs() {
+    onCvResize = function() {
+      if (!cv) return;
       W = cv.width = (cv.offsetWidth / 3) | 0;
       H = cv.height = (cv.offsetHeight / 3) | 0;
-    }
-    rs();
-    addEventListener('resize', rs);
+    };
+    onCvResize();
+    addEventListener('resize', onCvResize);
 
-    // Pause canvas animation when scrolled out of view to save 100% of GPU rendering during scroll
     if ('IntersectionObserver' in window) {
-      var cvObserver = new IntersectionObserver(function(entries) {
-        cvVisible = entries[0].isIntersecting;
+      cvObserver = new IntersectionObserver(function(entries) {
+        if (entries[0]) cvVisible = entries[0].isIntersecting;
       }, { threshold: 0 });
       cvObserver.observe(cv);
     }
 
     var reelEl = document.querySelector('.reel');
     if (reelEl) {
-      reelEl.addEventListener('mousemove', function(e) {
+      reelEl.addEventListener('mousemove', function(e: any) {
         var b = this.getBoundingClientRect();
         mx = (e.clientX - b.left) / b.width;
         my = (e.clientY - b.top) / b.height;
@@ -138,7 +196,7 @@ export function initMotion(): void {
 
     var cs = [[255, 96, 2], [255, 60, 0], [130, 20, 2], [255, 120, 30]];
     (function dr(ms) {
-      if (cvVisible) {
+      if (cvVisible && cx) {
         var t = ms / 1000;
         cx.globalCompositeOperation = 'source-over';
         cx.fillStyle = '#050302';
@@ -156,13 +214,13 @@ export function initMotion(): void {
           cx.fillRect(0, 0, W, H);
         }
       }
-      requestAnimationFrame(dr);
+      cvRafId = requestAnimationFrame(dr);
     })(0);
   }
 
   // Scroll animations: Unified RAF loop without layout thrashing
-  var reel = document.querySelector('.reel');
-  var h1 = document.querySelector('.hero h1');
+  var reel = document.querySelector('.reel') as HTMLElement | null;
+  var h1 = document.querySelector('.hero h1') as HTMLElement | null;
   var xw = document.getElementById('xw');
   var wp = document.getElementById('work');
   var wt = document.getElementById('wt');
@@ -173,9 +231,8 @@ export function initMotion(): void {
   var pcs = document.getElementById('process');
   var la = -1;
 
-  function cl(v) { return Math.max(0, Math.min(1, v)); }
+  function cl(v: number) { return Math.max(0, Math.min(1, v)); }
 
-  // Recalculate horizontal work container height ON RESIZE ONLY (never during scroll!)
   function updateWorkLayout() {
     if (wp && wt && innerWidth > 900) {
       var m = wt.scrollWidth - innerWidth;
@@ -193,7 +250,7 @@ export function initMotion(): void {
     var hp = cl(y / innerHeight);
 
     if (pb) pb.style.transform = 'scaleX(' + cl(y / maxScroll) + ')';
-    if (reel) reel.style.setProperty('--hp', hp);
+    if (reel) reel.style.setProperty('--hp', String(hp));
     if (h1) h1.style.transform = 'translate3d(0,' + (-hp * 60) + 'px,0)';
 
     if (innerWidth > 900) {
@@ -225,7 +282,7 @@ export function initMotion(): void {
         if (dist < bd) { bd = dist; best = sIdx; }
       }
       var rPcs = pcs.getBoundingClientRect();
-      if (rg) rg.style.strokeDashoffset = 339.3 * (1 - cl((innerHeight * 0.5 - rPcs.top) / rPcs.height));
+      if (rg) rg.style.strokeDashoffset = String(339.3 * (1 - cl((innerHeight * 0.5 - rPcs.top) / rPcs.height)));
       if (best !== la) {
         la = best;
         for (var j = 0; j < stp.length; j++) {
@@ -244,12 +301,12 @@ export function initMotion(): void {
     sc();
   }
 
-  // Unified requestAnimationFrame scroll ticker
   var scrollTicking = false;
+  var scrollRafId = 0;
   function onScroll() {
     if (!scrollTicking) {
       scrollTicking = true;
-      requestAnimationFrame(function() {
+      scrollRafId = requestAnimationFrame(function() {
         runScrollTasks();
         scrollTicking = false;
       });
@@ -261,7 +318,7 @@ export function initMotion(): void {
 
   // Subtle interactive buttons tilt
   document.querySelectorAll('.btn,.pill').forEach(function(b) {
-    b.addEventListener('mousemove', function(e) {
+    b.addEventListener('mousemove', function(e: any) {
       var rRect = b.getBoundingClientRect();
       b.style.transform = 'translate(' + ((e.clientX - rRect.left - rRect.width / 2) * 0.2) + 'px,' + ((e.clientY - rRect.top - rRect.height / 2) * 0.25) + 'px)';
     }, { passive: true });
@@ -277,12 +334,12 @@ export function initMotion(): void {
     cur = (cur + 1) % 4;
   }
   rot();
-  setInterval(rot, 2400);
+  var rotInterval = setInterval(rot, 2400);
 
   // Parallax hero badge
   var hm = document.getElementById('hm'), sp = document.getElementById('sp'), rl = document.querySelector('.reel');
   if (rl && hm && sp) {
-    rl.addEventListener('mousemove', function(e) {
+    rl.addEventListener('mousemove', function(e: any) {
       var bRl = rl.getBoundingClientRect(), x = (e.clientX - bRl.left) / bRl.width, y = (e.clientY - bRl.top) / bRl.height;
       hm.style.transform = 'translateY(-50%) translate(' + ((x - 0.5) * -34) + 'px,' + ((y - 0.5) * -22) + 'px)';
       sp.style.setProperty('--x', e.clientX - bRl.left + 'px');
@@ -295,7 +352,7 @@ export function initMotion(): void {
     b.addEventListener('click', function() { b.classList.toggle('on'); });
   });
 
-  var cf = document.getElementById('cf');
+  var cf = document.getElementById('cf') as HTMLFormElement | null;
   if (cf) {
     cf.addEventListener('submit', function(e) {
       e.preventDefault();
@@ -305,4 +362,21 @@ export function initMotion(): void {
       document.querySelectorAll('#cc button').forEach(function(b) { b.classList.remove('on'); });
     });
   }
+
+  // Cleanup handler when unmounting or re-initializing
+  var cleanup = function() {
+    clearInterval(clockInterval);
+    clearInterval(rotInterval);
+    if (io) io.disconnect();
+    if (cvObserver) cvObserver.disconnect();
+    if (cvRafId) cancelAnimationFrame(cvRafId);
+    if (scrollRafId) cancelAnimationFrame(scrollRafId);
+    if (onCvResize) removeEventListener('resize', onCvResize);
+    removeEventListener('resize', updateWorkLayout);
+    removeEventListener('scroll', onScroll);
+    if (onMouseMove) removeEventListener('mousemove', onMouseMove);
+  };
+
+  window.__onytCleanup = cleanup;
+  return cleanup;
 }

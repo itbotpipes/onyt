@@ -7,7 +7,6 @@ export default function Cta() {
       <div className="ctx-wrap">
         <div className="cx">
           <div className="rv">
-            <div className="ey">Let’s work together</div>
             <h2>Have a brand or product to grow? Let’s talk.</h2>
             <div className="av">
               <i></i>Now booking projects for Q1 2027

@@ -4,7 +4,12 @@ import { initMotion } from '@/lib/motion';
 
 export default function Motion() {
   useEffect(() => {
-    initMotion();
+    const cleanup = initMotion();
+    return () => {
+      if (typeof cleanup === 'function') {
+        cleanup();
+      }
+    };
   }, []);
   return null;
 }

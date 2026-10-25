@@ -10,6 +10,7 @@ import Stats from '@/components/Stats';
 import Process from '@/components/Process';
 import Capabilities from '@/components/Capabilities';
 import Testimonials from '@/components/Testimonials';
+import Faq from '@/components/Faq';
 import Cta from '@/components/Cta';
 import Footer from '@/components/Footer';
 import Motion from '@/components/Motion';
@@ -39,6 +40,7 @@ export default function Home() {
         <Process />
         <Capabilities />
         <Testimonials />
+        <Faq />
         <Cta />
       </main>
       <Footer />
