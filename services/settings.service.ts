@@ -1,0 +1,168 @@
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import { db, storage } from '@/lib/firebase/config';
+
+export interface SettingsData {
+  branding: {
+    logo: string;
+    logoWhite: string;
+    footerLogo?: string;
+    companyName: string;
+    siteTitle?: string;
+    favicon?: string;
+  };
+  analytics?: {
+    googleAnalyticsId?: string;
+    facebookPixelId?: string;
+    customHeadScripts?: string;
+    customBodyScripts?: string;
+  };
+  solutionsGridTitle: string;
+  solutionsGridDesc: string;
+  customCategories?: string[];
+  desktopVideoUrl?: string;
+  mobileVideoUrl?: string;
+  contactDesktopVideoUrl?: string;
+  contactMobileVideoUrl?: string;
+  demoDesktopVideoUrl?: string;
+  demoMobileVideoUrl?: string;
+}
+
+const DEFAULT_SETTINGS: SettingsData = {
+  branding: {
+    logo: '/logo1.png',
+    logoWhite: '/logo2.png',
+    footerLogo: '/logo2.png',
+    companyName: 'Quest For Tech',
+    siteTitle: 'Quest For Tech - Digital Solutions',
+    favicon: '/favicon1.png'
+  },
+  analytics: {
+    googleAnalyticsId: '',
+    facebookPixelId: '',
+    customHeadScripts: '',
+    customBodyScripts: ''
+  },
+  solutionsGridTitle: 'Twelve powerful features to help your restaurant run better',
+  solutionsGridDesc: 'Click on any feature card below to open its full specifications and details on a new page.',
+  customCategories: [],
+  desktopVideoUrl: '/Digitory.mp4',
+  mobileVideoUrl: '/mobile.mp4',
+  contactDesktopVideoUrl: '/Digitory.mp4',
+  contactMobileVideoUrl: '/mobile.mp4',
+  demoDesktopVideoUrl: '/Digitory.mp4',
+  demoMobileVideoUrl: '/mobile.mp4'
+};
+
+let settingsCache: SettingsData | null = null;
+
+export const settingsService = {
+  // Read settings (with in-memory cache to prevent N+1 layout reads)
+  async getSettings(bypassCache = false): Promise<SettingsData> {
+    if (settingsCache && !bypassCache) {
+      return settingsCache;
+    }
+
+    try {
+      const docRef = doc(db, 'settings', 'general');
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Firestore fetch timeout')), 2500)
+      );
+      const snap = await Promise.race([getDoc(docRef), timeoutPromise]);
+      if (snap && snap.exists()) {
+        const data = snap.data() as Partial<SettingsData>;
+        const companyName = data.branding?.companyName || DEFAULT_SETTINGS.branding.companyName;
+        settingsCache = {
+          branding: {
+            logo: data.branding?.logo || DEFAULT_SETTINGS.branding.logo,
+            logoWhite: data.branding?.logoWhite || DEFAULT_SETTINGS.branding.logoWhite,
+            footerLogo: data.branding?.footerLogo || data.branding?.logoWhite || DEFAULT_SETTINGS.branding.footerLogo,
+            companyName,
+            siteTitle: data.branding?.siteTitle || `${companyName} - Restaurant Operating System`,
+            favicon: data.branding?.favicon || DEFAULT_SETTINGS.branding.favicon
+          },
+          analytics: {
+            googleAnalyticsId: data.analytics?.googleAnalyticsId || '',
+            facebookPixelId: data.analytics?.facebookPixelId || '',
+            customHeadScripts: data.analytics?.customHeadScripts || '',
+            customBodyScripts: data.analytics?.customBodyScripts || ''
+          },
+          solutionsGridTitle: data.solutionsGridTitle || DEFAULT_SETTINGS.solutionsGridTitle,
+          solutionsGridDesc: data.solutionsGridDesc || DEFAULT_SETTINGS.solutionsGridDesc,
+          customCategories: data.customCategories || DEFAULT_SETTINGS.customCategories,
+          desktopVideoUrl: data.desktopVideoUrl || DEFAULT_SETTINGS.desktopVideoUrl,
+          mobileVideoUrl: data.mobileVideoUrl || DEFAULT_SETTINGS.mobileVideoUrl,
+          contactDesktopVideoUrl: data.contactDesktopVideoUrl || data.desktopVideoUrl || DEFAULT_SETTINGS.contactDesktopVideoUrl,
+          contactMobileVideoUrl: data.contactMobileVideoUrl || data.mobileVideoUrl || DEFAULT_SETTINGS.contactMobileVideoUrl,
+          demoDesktopVideoUrl: data.demoDesktopVideoUrl || data.desktopVideoUrl || DEFAULT_SETTINGS.demoDesktopVideoUrl,
+          demoMobileVideoUrl: data.demoMobileVideoUrl || data.mobileVideoUrl || DEFAULT_SETTINGS.demoMobileVideoUrl
+        };
+        return settingsCache;
+      }
+    } catch (e) {
+      // In offline or slow networks, return fallback defaults immediately
+    }
+
+    return DEFAULT_SETTINGS;
+  },
+
+  // Save settings
+  async saveSettings(payload: Partial<SettingsData>) {
+    const current = await this.getSettings(true);
+    const docRef = doc(db, 'settings', 'general');
+    
+    const updated = {
+      branding: {
+        logo: payload.branding?.logo || current.branding.logo,
+        logoWhite: payload.branding?.logoWhite || current.branding.logoWhite,
+        footerLogo: payload.branding?.footerLogo || current.branding.footerLogo || payload.branding?.logoWhite || current.branding.logoWhite || '/logo2.png',
+        companyName: payload.branding?.companyName || current.branding.companyName,
+        siteTitle: payload.branding?.siteTitle !== undefined ? payload.branding.siteTitle : (current.branding.siteTitle || `${current.branding.companyName} - Restaurant Operating System`),
+        favicon: payload.branding?.favicon || current.branding.favicon || '/favicon1.png'
+      },
+      analytics: {
+        googleAnalyticsId: payload.analytics?.googleAnalyticsId !== undefined ? payload.analytics.googleAnalyticsId : (current.analytics?.googleAnalyticsId || ''),
+        facebookPixelId: payload.analytics?.facebookPixelId !== undefined ? payload.analytics.facebookPixelId : (current.analytics?.facebookPixelId || ''),
+        customHeadScripts: payload.analytics?.customHeadScripts !== undefined ? payload.analytics.customHeadScripts : (current.analytics?.customHeadScripts || ''),
+        customBodyScripts: payload.analytics?.customBodyScripts !== undefined ? payload.analytics.customBodyScripts : (current.analytics?.customBodyScripts || '')
+      },
+      solutionsGridTitle: payload.solutionsGridTitle || current.solutionsGridTitle,
+      solutionsGridDesc: payload.solutionsGridDesc || current.solutionsGridDesc,
+      customCategories: payload.customCategories || current.customCategories || [],
+      desktopVideoUrl: payload.desktopVideoUrl || current.desktopVideoUrl || '/Digitory.mp4',
+      mobileVideoUrl: payload.mobileVideoUrl || current.mobileVideoUrl || '/mobile.mp4',
+      contactDesktopVideoUrl: payload.contactDesktopVideoUrl || current.contactDesktopVideoUrl || payload.desktopVideoUrl || '/Digitory.mp4',
+      contactMobileVideoUrl: payload.contactMobileVideoUrl || current.contactMobileVideoUrl || payload.mobileVideoUrl || '/mobile.mp4',
+      demoDesktopVideoUrl: payload.demoDesktopVideoUrl || current.demoDesktopVideoUrl || payload.desktopVideoUrl || '/Digitory.mp4',
+      demoMobileVideoUrl: payload.demoMobileVideoUrl || current.demoMobileVideoUrl || payload.mobileVideoUrl || '/mobile.mp4'
+    };
+
+    await setDoc(docRef, updated, { merge: true });
+    settingsCache = updated; // Invalidate/update cache
+    return updated;
+  },
+
+  // Storage upload helper for logo branding files
+  async uploadBrandingLogo(file: File, filename: string): Promise<string> {
+    const uformData = new FormData();
+    uformData.append("file", file);
+
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      body: uformData,
+    });
+
+    if (!res.ok) {
+      const errData = await res.json();
+      throw new Error(errData.error || "Upload failed");
+    }
+
+    const { url } = await res.json();
+    return url;
+  },
+
+  // Storage cleanup helper (noop for Cloudinary)
+  async deleteBrandingLogo(url: string) {
+    // Left as noop
+  }
+};
