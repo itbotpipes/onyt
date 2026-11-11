@@ -31,6 +31,12 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
+    // Singleton guard: never create duplicate Lenis smooth scroll instances
+    if ((window as any).__lenis) {
+      lenisRef.current = (window as any).__lenis;
+      return;
+    }
+
     const lenis = new Lenis({
       duration: 1.15,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -46,8 +52,11 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
     // Attach to window for any component that needs direct access
     (window as any).__lenis = lenis;
 
+    // Safe ScrollTrigger integration without recursive synthetic event dispatch
     lenis.on('scroll', () => {
-      window.dispatchEvent(new Event('scroll'));
+      if (typeof window !== 'undefined' && (window as any).ScrollTrigger) {
+        (window as any).ScrollTrigger.update();
+      }
     });
 
     let rafId: number;
@@ -62,7 +71,9 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
       cancelAnimationFrame(rafId);
       lenis.destroy();
       lenisRef.current = null;
-      delete (window as any).__lenis;
+      if ((window as any).__lenis === lenis) {
+        delete (window as any).__lenis;
+      }
     };
   }, [isAdmin]);
 

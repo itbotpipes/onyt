@@ -1,6 +1,5 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import SmoothScrollProvider from '@/components/services/SmoothScrollProvider';
 import Nav from '@/components/Nav';
 import SolutionsHero from '@/components/services/SolutionsHero';
 import SolutionsRail from '@/components/services/SolutionsRail';
@@ -16,7 +15,7 @@ export const dynamic = 'force-dynamic';
 
 export default function ServicesPage() {
   return (
-    <SmoothScrollProvider>
+    <>
       {/* Custom cursor — desktop only, disabled on reduced motion */}
       <CustomCursor />
 
@@ -47,6 +46,6 @@ export default function ServicesPage() {
       </main>
 
       <Footer />
-    </SmoothScrollProvider>
+    </>
   );
 }

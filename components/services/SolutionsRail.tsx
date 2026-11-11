@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 
 interface Offering {
@@ -102,9 +102,6 @@ export default function SolutionsRail() {
   const triggerRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
-  
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isClient, setIsClient] = useState(false);
 
   // 3D Cylinder geometry calculations
   const renderWheel = useCallback((currentPos: number, isMobile = false) => {
@@ -150,7 +147,6 @@ export default function SolutionsRail() {
   }, []);
 
   useEffect(() => {
-    setIsClient(true);
     let ctx: any;
 
     const setup = async () => {
@@ -171,8 +167,6 @@ export default function SolutionsRail() {
       if (!triggerRef.current) return;
 
       ctx = gsap.context(() => {
-        let lastIdx = 0;
-
         ScrollTrigger.create({
           trigger: triggerRef.current,
           start: 'top top',
@@ -184,15 +178,6 @@ export default function SolutionsRail() {
             const pos = self.progress * (OFFERINGS.length - 1);
             const mobileNow = window.innerWidth < 768;
             renderWheel(pos, mobileNow);
-
-            const idx = Math.min(
-              Math.max(0, Math.round(pos)),
-              OFFERINGS.length - 1
-            );
-            if (idx !== lastIdx) {
-              lastIdx = idx;
-              setActiveIndex(idx);
-            }
           },
         });
       }, triggerRef);
@@ -204,8 +189,6 @@ export default function SolutionsRail() {
       if (ctx) ctx.revert();
     };
   }, [renderWheel]);
-
-  const activeService = OFFERINGS[activeIndex] || OFFERINGS[0];
 
   return (
     <section

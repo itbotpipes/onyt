@@ -41,6 +41,7 @@ export default function ApproachTimeline() {
       // GSAP ScrollTrigger with pin: true to lock section during full animation scrub
       const ctx = gsap.context(() => {
         if (!triggerRef.current) return;
+        let lastIdx = -1;
         ScrollTrigger.create({
           trigger: triggerRef.current,
           start: 'top top',
@@ -64,7 +65,10 @@ export default function ApproachTimeline() {
               Math.floor(progress * STEPS.length),
               STEPS.length - 1
             );
-            setActiveStepIndex(currentIdx);
+            if (currentIdx !== lastIdx) {
+              lastIdx = currentIdx;
+              setActiveStepIndex(currentIdx);
+            }
           },
         });
       }, triggerRef);
