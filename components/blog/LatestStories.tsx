@@ -88,57 +88,82 @@ export default function LatestStories({
   const filteredStories = allStories.filter(matchesFilter);
 
   return (
-    <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
+    <section className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 py-8 md:py-14">
       {/* Section Header: Title */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 md:mb-12">
         <div>
-          <span className="text-[11px] md:text-[12px] font-bold uppercase tracking-widest text-[var(--ac)] block mb-2">
-            Blog & Insights
-          </span>
-          <h2 className="text-3xl sm:text-4xl md:text-[44px] font-bold tracking-tight text-[var(--fg)] leading-[1.15] font-display">
-            Latest <span className="text-[var(--ac)]">Stories</span>
+          <div className="ey">Blog & Insights</div>
+          <h2
+            className="text-3xl sm:text-4xl md:text-[46px] font-bold tracking-tight text-[var(--fg)] leading-[1.08]"
+            style={{ fontFamily: 'var(--d)' }}
+          >
+            Latest <span style={{ color: 'var(--ac)' }}>Stories</span>
           </h2>
         </div>
       </div>
 
       {/* Article Grid */}
       {isLoading ? (
-        <div className="text-center py-20 text-[var(--fg)]/50 font-semibold animate-pulse">Loading stories...</div>
+        <div className="text-center py-20 text-[var(--mut)] font-semibold animate-pulse" style={{ fontFamily: 'var(--b)' }}>
+          Loading stories...
+        </div>
       ) : (() => {
         const storiesToRender = isFiltering ? filteredStories : allStories;
         if (storiesToRender.length === 0) {
           return (
-            <div className="text-center py-16 text-[var(--fg)]/60 font-semibold">
+            <div className="text-center py-16 text-[var(--mut)] font-semibold rounded-2xl border border-[var(--ln)] bg-[var(--cd)]" style={{ fontFamily: 'var(--b)' }}>
               No stories found matching your criteria.
             </div>
           );
         }
         return (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {storiesToRender.slice(0, visibleCount).map((article) => (
               <Link
                 key={article.id}
                 href={`/blogs/${article.slug}`}
-                className="flex flex-col h-full bg-transparent group cursor-pointer"
+                className="group flex flex-col justify-between h-full bg-[var(--cd)] border border-[var(--ln)] hover:border-[var(--ac)]/60 rounded-[24px] p-5 sm:p-6 transition-all duration-300 hover:shadow-[0_12px_36px_rgba(0,0,0,0.35)] hover:-translate-y-1 cursor-pointer"
               >
-                <div className="relative aspect-16/10 w-full overflow-hidden rounded-[20px] bg-[var(--cd)] mb-4 border border-[var(--ln)] shadow-2xs shrink-0">
-                  <Image
-                    src={encodeURI(article.image)}
-                    alt={article.title}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover group-hover:scale-103 transition-transform duration-500"
-                  />
+                <div>
+                  {/* Image Card Container */}
+                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[16px] bg-[var(--bg)] border border-[var(--ln)]/60 mb-5">
+                    <Image
+                      src={encodeURI(article.image)}
+                      alt={article.title}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+
+                  {/* Category Pill Tag */}
+                  <div className="mb-2.5">
+                    <span 
+                      className="text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--ac)] font-mono"
+                      style={{ fontFamily: 'var(--b)' }}
+                    >
+                      {article.category}
+                    </span>
+                  </div>
+
+                  {/* Story Title */}
+                  <h3
+                    className="text-[18px] sm:text-[20px] font-bold leading-[1.28] tracking-[-0.02em] text-[var(--fg)] group-hover:text-[var(--ac)] transition-colors mb-2 line-clamp-2"
+                    style={{ fontFamily: 'var(--d)' }}
+                  >
+                    {article.title}
+                  </h3>
                 </div>
-                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--ac)] mb-1">
-                  {article.category}
-                </span>
-                <h3 className="text-base font-bold leading-snug text-[var(--fg)] group-hover:text-[var(--ac)] transition-colors mb-2 line-clamp-2">
-                  {article.title}
-                </h3>
-                <p className="text-xs font-semibold text-[var(--fg)]/60 mt-auto font-mono">
-                  {article.date}
-                </p>
+
+                {/* Story Date / Footer */}
+                <div className="mt-5 pt-4 border-t border-[var(--ln)]/50 flex items-center justify-between text-xs text-[var(--mut)]">
+                  <span className="font-mono" style={{ fontFamily: 'var(--b)' }}>
+                    {article.date}
+                  </span>
+                  <span className="text-[var(--ac)] font-bold group-hover:translate-x-1 transition-transform inline-flex items-center text-sm">
+                    &rarr;
+                  </span>
+                </div>
               </Link>
             ))}
           </div>
@@ -153,11 +178,12 @@ export default function LatestStories({
             <button
               type="button"
               onClick={() => setVisibleCount((prev) => prev + 6)}
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[var(--ac)] hover:bg-[var(--a2)] text-sm font-bold text-white transition-all duration-300 shadow-[0_4px_20px_rgba(255,77,0,0.25)] hover:shadow-[0_6px_25px_rgba(255,77,0,0.4)] active:scale-[0.98] cursor-pointer"
+              className="btn px-8 py-3.5 text-sm cursor-pointer"
+              style={{ fontFamily: 'var(--b)' }}
             >
               <span>Load More Stories</span>
               <svg
-                className="w-4 h-4 text-white"
+                className="w-4 h-4 ml-1"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -165,7 +191,7 @@ export default function LatestStories({
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2.5}
+                  strokeWidth="2"
                   d="M19 9l-7 7-7-7"
                 />
               </svg>

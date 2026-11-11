@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
-import { Plus, Minus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { INDUSTRIES_PAGE_DATA } from './industriesData';
 
 export default function IndustryFAQSection() {
@@ -14,73 +13,128 @@ export default function IndustryFAQSection() {
   };
 
   return (
-    <section className="py-24 sm:py-28 lg:py-32 bg-[var(--bg)] text-[var(--fg)] border-b border-[var(--ln)]">
-      <div className="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+    <section
+      className="py-24 sm:py-28 lg:py-36 px-6 sm:px-10 lg:px-16 border-b border-[var(--ln)] relative"
+      style={{ background: 'var(--bg)' }}
+    >
+      <div className="max-w-[1440px] mx-auto">
+        
+        {/* 3-COLUMN INTEGRATED SECTION GRID */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-start">
           
-          {/* LEFT COLUMN: Heading & Intro */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-[var(--ac)]" />
-              <span className="text-xs font-mono tracking-[0.25em] uppercase text-[var(--fg)]/60 font-semibold">
-                {faq.eyebrow}
-              </span>
-            </div>
+          {/* LEFT COLUMN: Eyebrow + Headline */}
+          <div className="lg:col-span-4 space-y-4">
+            <div className="ey rv">FAQs</div>
 
-            <h2 className="text-[36px] sm:text-[48px] lg:text-[56px] font-bold leading-[0.98] tracking-[-0.03em] text-[var(--fg)] font-display">
-              {faq.titleLines.map((line, idx) => (
-                <React.Fragment key={idx}>
-                  {line}
-                  {idx < faq.titleLines.length - 1 && <br />}
-                </React.Fragment>
-              ))}
-            </h2>
-
-            <p className="text-base sm:text-lg text-[var(--fg)]/70 leading-relaxed max-w-[440px]">
-              {faq.subhead}
-            </p>
-
-            <div className="pt-2">
-              <Link
-                href={faq.ctaHref}
-                className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--fg)] hover:text-[var(--ac)] transition-colors"
+            <div className="rv">
+              <h2
+                className="text-[34px] sm:text-[44px] lg:text-[50px] font-extrabold leading-[1.04] tracking-[-0.035em]"
+                style={{ fontFamily: 'var(--d)', color: 'var(--fg)' }}
               >
-                <span>{faq.ctaText}</span>
-                <span>↗</span>
-              </Link>
+                {faq.title}{' '}
+                <span style={{ color: 'var(--ac)', display: 'block' }}>
+                  {faq.highlightWord}
+                </span>
+              </h2>
             </div>
           </div>
 
-          {/* RIGHT COLUMN: Minimal Accordion */}
-          <div className="lg:col-span-7 divide-y divide-[var(--ln)] border-t border-b border-[var(--ln)]">
+          {/* CENTER COLUMN: FAQ Accordion items */}
+          <div className="lg:col-span-5 divide-y divide-[var(--ln)] border-y border-[var(--ln)] rv">
             {faq.items.map((item, idx) => {
               const isOpen = openIndex === idx;
+
               return (
-                <div key={idx} className="py-6 sm:py-8 transition-colors">
+                <div key={idx} className="transition-colors duration-200">
                   <button
                     onClick={() => toggleAccordion(idx)}
-                    className="w-full flex items-center justify-between gap-6 text-left group cursor-pointer"
-                    aria-expanded={isOpen}
+                    className="w-full py-6 flex items-center justify-between gap-4 text-left group cursor-pointer"
                   >
-                    <span className="text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-[var(--fg)] group-hover:text-[var(--ac)] transition-colors">
+                    <span
+                      className={`text-sm sm:text-base font-bold tracking-tight transition-colors duration-300 ${
+                        isOpen ? 'text-[var(--ac)]' : 'group-hover:text-[var(--ac)]'
+                      }`}
+                      style={{ fontFamily: 'var(--d)', color: isOpen ? 'var(--ac)' : 'var(--fg)' }}
+                    >
                       {item.question}
                     </span>
-                    <div className="w-8 h-8 rounded-full border border-[var(--ln)] flex items-center justify-center text-[var(--fg)] shrink-0 group-hover:border-[var(--ac)] group-hover:text-[var(--ac)] transition-colors">
-                      {isOpen ? <Minus size={16} /> : <Plus size={16} />}
-                    </div>
+
+                    <span
+                      className={`w-6 h-6 rounded-full border border-[var(--ln)] flex items-center justify-center flex-shrink-0 transition-transform duration-300 ${
+                        isOpen ? 'rotate-45 border-[var(--ac)] text-[var(--ac)]' : 'group-hover:border-[var(--ac)]'
+                      }`}
+                      style={{ color: 'var(--fg)' }}
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                    </span>
                   </button>
 
-                  {isOpen && (
-                    <div className="mt-4 pr-12 text-sm sm:text-base text-[var(--fg)]/75 leading-relaxed font-light animate-fadeIn">
+                  <div
+                    className={`overflow-hidden transition-all duration-400 ease-in-out ${
+                      isOpen ? 'max-h-48 pb-6 opacity-100' : 'max-h-0 opacity-0'
+                    }`}
+                  >
+                    <p
+                      className="text-xs sm:text-sm leading-relaxed pr-6"
+                      style={{ fontFamily: 'var(--b)', color: 'var(--mut)' }}
+                    >
                       {item.answer}
-                    </div>
-                  )}
+                    </p>
+                  </div>
                 </div>
               );
             })}
           </div>
 
+          {/* RIGHT COLUMN: Studio Testimonial Card */}
+          <div
+            className="rv lg:col-span-3 flex flex-col justify-between p-8 rounded-3xl border border-[var(--ln)] min-h-[340px] shadow-sm"
+            style={{ background: 'color-mix(in srgb, var(--cd) 70%, var(--bg))' }}
+          >
+            <div>
+              {/* Kinetic Orange Double Quote */}
+              <div
+                className="text-[48px] font-serif leading-none select-none mb-3"
+                style={{ fontFamily: 'var(--d)', color: 'var(--ac)' }}
+              >
+                “
+              </div>
+
+              <blockquote
+                className="text-base sm:text-lg font-medium italic leading-snug tracking-tight"
+                style={{ fontFamily: 'var(--d)', color: 'var(--fg)' }}
+              >
+                &ldquo;{faq.testimonial.quote}&rdquo;
+              </blockquote>
+            </div>
+
+            {/* Author Block */}
+            <div className="pt-8 flex items-center gap-3.5 border-t border-[var(--ln)]/40 mt-6">
+              <div
+                className="w-10 h-10 rounded-full border flex items-center justify-center text-xs font-bold uppercase tracking-wider flex-shrink-0"
+                style={{ background: 'rgba(255,77,0,0.15)', borderColor: 'rgba(255,77,0,0.4)', color: 'var(--ac)' }}
+              >
+                MH
+              </div>
+              <div className="text-xs">
+                <div
+                  className="font-bold"
+                  style={{ fontFamily: 'var(--d)', color: 'var(--fg)' }}
+                >
+                  {faq.testimonial.author}
+                </div>
+                <div
+                  className="font-medium text-[11px]"
+                  style={{ fontFamily: 'var(--b)', color: 'var(--mut)' }}
+                >
+                  {faq.testimonial.company}
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
+
       </div>
     </section>
   );

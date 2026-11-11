@@ -30,17 +30,17 @@ export default function Cta() {
         <div className="cr rv">
           <a className="cl2" href="mailto:hello@onyt.com">
             <small>Start a project</small>
-            <b>hello@onyt.com</b>
+            <b style={{ fontFamily: 'var(--d)' }}>hello@onyt.com</b>
             <i>↗</i>
           </a>
           <a className="cl2" href="tel:+910000000000">
             <small>Call us</small>
-            <b>+91 00000 00000</b>
+            <b style={{ fontFamily: 'var(--d)' }}>+91 00000 00000</b>
             <i>↗</i>
           </a>
           <a className="cl2" href="https://instagram.com" target="_blank" rel="noopener noreferrer">
             <small>Follow us</small>
-            <b>Instagram</b>
+            <b style={{ fontFamily: 'var(--d)' }}>Instagram</b>
             <i>↗</i>
           </a>
         </div>

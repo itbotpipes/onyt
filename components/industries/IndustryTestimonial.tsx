@@ -5,8 +5,7 @@ import { Quote } from 'lucide-react';
 import { INDUSTRIES_PAGE_DATA } from './industriesData';
 
 export default function IndustryTestimonial() {
-  const { testimonial } = INDUSTRIES_PAGE_DATA;
-  const { item } = testimonial;
+  const item = INDUSTRIES_PAGE_DATA.faq.testimonial;
 
   return (
     <section className="py-20 sm:py-24 lg:py-28 bg-[var(--bg)] text-[var(--fg)] border-b border-[var(--ln)]">
@@ -16,7 +15,7 @@ export default function IndustryTestimonial() {
         <div className="flex items-center gap-3 mb-12 lg:mb-16">
           <span className="w-2 h-2 rounded-full bg-[var(--ac)]" />
           <span className="text-xs font-mono tracking-[0.25em] uppercase text-[var(--fg)]/60 font-semibold">
-            {testimonial.eyebrow}
+            TESTIMONIAL
           </span>
         </div>
 
@@ -26,7 +25,7 @@ export default function IndustryTestimonial() {
           {/* LEFT: Photographic Workspace Visual */}
           <div className="lg:col-span-5 xl:col-span-5 relative rounded-xl overflow-hidden bg-[var(--cd)] border border-[var(--ln)] aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/3]">
             <img
-              src={item.image}
+              src="/hero-workspace.jpg"
               alt={item.company}
               className="w-full h-full object-cover object-center"
             />
@@ -48,25 +47,20 @@ export default function IndustryTestimonial() {
           </div>
 
           {/* RIGHT: Quote & Attribution */}
-          <div className="lg:col-span-7 xl:col-span-7 space-y-6 lg:pl-4">
-            <Quote size={36} className="text-[var(--ac)]/40" />
-            
-            <blockquote className="text-2xl sm:text-3xl lg:text-[34px] font-normal tracking-tight text-[var(--fg)] leading-[1.2] font-display">
-              {item.quote || "“ONYT understood our industry, our audience and our goals. The entire process was smooth, professional and result-driven.”"}
+          <div className="lg:col-span-7 xl:col-span-7 space-y-8">
+            <Quote className="w-10 h-10 text-[var(--ac)] stroke-[1.5]" />
+
+            <blockquote className="text-2xl sm:text-3xl lg:text-4xl font-light text-[var(--fg)] tracking-tight leading-snug">
+              &ldquo;{item.quote}&rdquo;
             </blockquote>
 
             <div className="flex items-center gap-4 pt-4 border-t border-[var(--ln)]">
-              <img
-                src={item.avatar}
-                alt="Rahul Mehta"
-                className="w-11 h-11 rounded-full object-cover border border-[var(--ln)]"
-              />
               <div>
-                <p className="text-base font-semibold text-[var(--fg)]">
-                  Rahul Mehta
+                <p className="text-base sm:text-lg font-bold text-[var(--fg)]">
+                  {item.author}
                 </p>
-                <p className="text-xs font-mono uppercase tracking-wider text-[var(--fg)]/60">
-                  Director, Skyline Group
+                <p className="text-xs sm:text-sm text-[var(--mut)]">
+                  {item.role}, {item.company}
                 </p>
               </div>
             </div>

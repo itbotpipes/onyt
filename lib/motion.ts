@@ -154,7 +154,7 @@ export function initMotion(): () => void {
     };
     addEventListener('mousemove', onMouseMove, { passive: true });
 
-    document.querySelectorAll('a,button,.sc,.pj').forEach(function(e) {
+    document.querySelectorAll('a,button,.sc,.pj,.svc-panel').forEach(function(e) {
       e.addEventListener('mouseenter', function() { c.style.width = c.style.height = '50px'; });
       e.addEventListener('mouseleave', function() { c.style.width = c.style.height = '12px'; });
     });
@@ -239,6 +239,7 @@ export function initMotion(): () => void {
   var xw = document.getElementById('xw');
   var wp = document.getElementById('work');
   var wt = document.getElementById('wt');
+  var ws = document.querySelector('.ws') as HTMLElement | null;
   var pb = document.getElementById('pb');
   var stp = document.querySelectorAll('.stp');
   var rg = document.getElementById('rg');

@@ -4,23 +4,34 @@ export interface IndustryGridItem {
   title: string;
   slug: string;
   shortDesc: string;
-  image: string;
+  tags?: string[];
+  image?: string;
   ctaText?: string;
 }
 
 export interface IndustryStatItem {
   number: string;
   label: string;
+  value?: number;
+  suffix?: string;
+}
+
+export interface IndustryProcessStep {
+  number: string;
+  title: string;
+  description: string;
 }
 
 export interface IndustryCaseStudy {
   id: string;
+  number: string;
   industryTag: string;
   title: string;
   summary: string;
   resultMetric?: string;
-  image: string;
+  image?: string;
   link: string;
+  variant?: 'shard' | 'arcs';
   isPrimary?: boolean;
 }
 
@@ -34,94 +45,144 @@ export interface IndustryTestimonial {
   author: string;
   role: string;
   company: string;
-  avatar: string;
-  imageOverlayTitle: string[];
-  image: string;
+  avatar?: string;
+  imageOverlayTitle?: string[];
+  image?: string;
 }
 
 export interface IndustriesPageContent {
   hero: {
     eyebrow: string;
-    headlineLines: string[];
+    headline: {
+      line1: string;
+      line2: string;
+      line3: string;
+      highlight: string;
+    };
+    headlineLines?: string[];
     body: string;
     ctaText: string;
     ctaHref: string;
-    annotationLines: string[];
-    image: string;
+    annotationLines?: string[];
+    image?: string;
+    kpis: {
+      number: string;
+      label: string;
+    }[];
+  };
+  ticker: {
+    prefix: string;
+    items: string[];
   };
   grid: {
     eyebrow: string;
-    titleLines: string[];
-    subhead: string;
+    heading: string;
+    titleLines?: string[];
+    subhead?: string;
     items: IndustryGridItem[];
+  };
+  process: {
+    eyebrow: string;
+    title: {
+      prefix: string;
+      highlight: string;
+    };
+    steps: IndustryProcessStep[];
   };
   stats: {
     eyebrow: string;
-    titleLines: string[];
-    subhead: string;
+    titleLines?: string[];
+    subhead?: string;
     items: IndustryStatItem[];
   };
   caseStudies: {
     eyebrow: string;
     title: string;
+    highlightWord: string;
     ctaText: string;
     ctaHref: string;
     items: IndustryCaseStudy[];
   };
   faq: {
     eyebrow: string;
-    titleLines: string[];
-    subhead: string;
+    title: string;
+    highlightWord: string;
+    titleLines?: string[];
+    subhead?: string;
     ctaText: string;
     ctaHref: string;
     items: IndustryFAQ[];
+    testimonial: IndustryTestimonial;
   };
-  testimonial: {
+  testimonial?: {
     eyebrow: string;
     item: IndustryTestimonial;
   };
   finalCta: {
-    eyebrow: string;
-    titleLines: string[];
-    body: string;
-    primaryCtaText: string;
-    primaryCtaHref: string;
-    secondaryCtaText: string;
-    secondaryCtaHref: string;
-    annotationLines: string[];
-    image: string;
+    eyebrow?: string;
+    title: string;
+    titleLines?: string[];
+    body?: string;
+    ctaText: string;
+    ctaHref: string;
+    primaryCtaText?: string;
+    primaryCtaHref?: string;
+    secondaryCtaText?: string;
+    secondaryCtaHref?: string;
+    annotationLines?: string[];
+    image?: string;
   };
 }
 
 export const INDUSTRIES_PAGE_DATA: IndustriesPageContent = {
   hero: {
-    eyebrow: "01 — INDUSTRIES",
+    eyebrow: "INDUSTRIES",
+    headline: {
+      line1: "Industry",
+      line2: "expertise",
+      line3: "that scales",
+      highlight: "brands."
+    },
     headlineLines: [
-      "Different",
-      "Industries.",
-      "Different Challenges.",
-      "One Digital Partner."
+      "Industry expertise",
+      "that scales brands."
     ],
-    body: "We work across industries, combining strategy, creativity, marketing and technology to build digital solutions around how each business actually works.",
-    ctaText: "Let's Build for Your Industry →",
-    ctaHref: "#industries-grid",
-    annotationLines: ["More", "Possibilities", "Together."],
-    image: "/cta-digital-flow.jpg"
+    body: "We combine industry understanding with creative, performance and technology to solve real business challenges and drive measurable growth.",
+    ctaText: "Explore Industries ↘",
+    ctaHref: "#explorer",
+    kpis: [
+      { number: "06", label: "Industries" },
+      { number: "250+", label: "Projects" },
+      { number: "3.5×", label: "Avg. growth" }
+    ]
+  },
+  ticker: {
+    prefix: "ONYT WORKS WITH —",
+    items: [
+      "E-COMMERCE",
+      "HEALTHCARE",
+      "REAL ESTATE",
+      "MANUFACTURING",
+      "SAAS & TECHNOLOGY",
+      "EDUCATION"
+    ]
   },
   grid: {
-    eyebrow: "02 — OUR INDUSTRIES",
+    eyebrow: "///",
+    heading: "Sectors we drive forward.",
     titleLines: [
-      "Built Around",
-      "Your Industry."
+      "Sectors we drive",
+      "forward."
     ],
-    subhead: "Different markets need different thinking. We adapt the strategy, experience and technology to fit the business behind it.",
+    subhead: "Deep domain execution across specialized verticals where digital velocity delivers outsized market share.",
     items: [
       {
-        id: "manufacturing",
+        id: "e-commerce",
         number: "01",
-        title: "Manufacturing",
-        slug: "manufacturing",
-        shortDesc: "Digital experiences for complex products, capabilities and B2B buying journeys.",
+        title: "E-Commerce",
+        slug: "e-commerce",
+        shortDesc: "End-to-end growth for D2C and consumer brands — from acquisition to retention and beyond.",
+        tags: ["Performance", "Brand", "Engineering"],
         image: "/svc-dev.jpg"
       },
       {
@@ -129,136 +190,171 @@ export const INDUSTRIES_PAGE_DATA: IndustriesPageContent = {
         number: "02",
         title: "Healthcare",
         slug: "healthcare",
-        shortDesc: "Clear, trustworthy digital experiences designed around accessibility and confidence.",
+        shortDesc: "Clear, trustworthy digital experiences designed around patient confidence, accessibility and clinical rigor.",
+        tags: ["UX Strategy", "Identity", "Accessibility"],
         image: "/svc-seo.jpg"
       },
       {
-        id: "e-commerce",
+        id: "real-estate",
         number: "03",
-        title: "E-commerce",
-        slug: "e-commerce",
-        shortDesc: "Conversion-focused digital experiences built around products, customers and growth.",
-        image: "/hero-device.jpg"
-      },
-      {
-        id: "professional-services",
-        number: "04",
-        title: "Professional Services",
-        slug: "professional-services",
-        shortDesc: "Credibility-led websites and marketing systems that turn expertise into opportunities.",
-        image: "/hero-workspace.jpg"
-      },
-      {
-        id: "b2b",
-        number: "05",
-        title: "B2B Businesses",
-        slug: "b2b",
-        shortDesc: "Digital platforms designed to explain complex offerings and generate qualified enquiries.",
+        title: "Real Estate",
+        slug: "real-estate",
+        shortDesc: "A performance-first digital ecosystem that drove higher quality inquiries and faster conversions.",
+        tags: ["Lead Engines", "Visual Flagships", "Brand Architecture"],
         image: "/svc-web.jpg"
       },
       {
-        id: "hospitality",
+        id: "manufacturing",
+        number: "04",
+        title: "Manufacturing",
+        slug: "manufacturing",
+        shortDesc: "Digital platforms for complex industrial catalogs, distributor portals and international B2B buyer journeys.",
+        tags: ["B2B Architecture", "Catalog Systems", "Lead Capture"],
+        image: "/hero-workspace.jpg"
+      },
+      {
+        id: "saas-technology",
+        number: "05",
+        title: "SaaS & Technology",
+        slug: "saas-technology",
+        shortDesc: "Category-defining brand flagships, product positioning and conversion pipelines for enterprise software.",
+        tags: ["Product Motion", "Design Systems", "Funnel Scale"],
+        image: "/hero-device.jpg"
+      },
+      {
+        id: "education",
         number: "06",
-        title: "Hospitality & Other Businesses",
-        slug: "hospitality",
-        shortDesc: "Flexible digital solutions built around customer experience, visibility and business goals.",
+        title: "Education",
+        slug: "education",
+        shortDesc: "Engaging learning portals, institutional credibility systems and student acquisition funnels that scale global enrollment.",
+        tags: ["Student Portals", "Enrollment UX", "Brand Media"],
         image: "/cs-photo.jpg"
       }
     ]
   },
+  process: {
+    eyebrow: "THE ONYT APPROACH",
+    title: {
+      prefix: "A cross-industry engine for",
+      highlight: "measurable growth."
+    },
+    steps: [
+      {
+        number: "01",
+        title: "Understand the industry",
+        description: "Deep dive into sector regulations, buyer psychology, and competitive whitespace before writing code."
+      },
+      {
+        number: "02",
+        title: "Build a tailored strategy",
+        description: "Architecting a unified digital flagship and customer acquisition engine engineered for your exact business model."
+      },
+      {
+        number: "03",
+        title: "Execute & scale",
+        description: "High-velocity launch, measurement pipelines, and continuous optimization cycles that guarantee measurable ROI."
+      }
+    ]
+  },
   stats: {
-    eyebrow: "03 — INDUSTRIES IN NUMBERS",
+    eyebrow: "INDUSTRIES IN NUMBERS",
     titleLines: [
       "Real Businesses.",
       "Real Growth."
     ],
-    subhead: "From emerging brands to established businesses, we help companies across industries turn digital opportunities into measurable growth.",
+    subhead: "From emerging brands to established enterprises, we turn market complexity into measurable revenue growth.",
     items: [
-      { number: "250+", label: "Projects Delivered" },
-      { number: "6+", label: "Industries Served" },
-      { number: "3.5×", label: "Average Growth in Leads" },
-      { number: "95%", label: "Client Satisfaction" }
+      { number: "250+", label: "Projects delivered", value: 250, suffix: "+" },
+      { number: "6+", label: "Industries served", value: 6, suffix: "+" },
+      { number: "3.5×", label: "Avg. growth in leads", value: 3.5, suffix: "×" },
+      { number: "95%", label: "Client satisfaction", value: 95, suffix: "%" }
     ]
   },
   caseStudies: {
-    eyebrow: "04 — FEATURED CASE STUDIES",
-    title: "Featured Case Studies",
-    ctaText: "View All Case Studies →",
-    ctaHref: "/case-studies",
+    eyebrow: "FEATURED WORK",
+    title: "Real results across",
+    highlightWord: "industries.",
+    ctaText: "Explore all work",
+    ctaHref: "/work",
     items: [
       {
-        id: "cs-1",
-        industryTag: "REAL ESTATE",
-        title: "From Vision to 4x Enquiries",
-        summary: "A modern digital platform that helped a real estate brand generate higher visibility and qualified leads.",
-        resultMetric: "4x Enquiries",
-        image: "/svc-web.jpg",
-        link: "/case-studies/real-estate-growth",
-        isPrimary: true
+        id: "cs-real-estate",
+        number: "01",
+        industryTag: "Real Estate",
+        title: "Real Estate",
+        summary: "A performance-first digital ecosystem that drove higher quality inquiries and faster conversions.",
+        resultMetric: "4× Enquiries",
+        link: "/industries/real-estate",
+        variant: "shard"
       },
       {
-        id: "cs-2",
-        industryTag: "HOSPITALITY",
-        title: "A Stronger Digital Presence",
-        summary: "How a hospitality brand scaled its online visibility and bookings through a refined digital experience.",
-        image: "/cs-photo.jpg",
-        link: "/case-studies/hospitality-experience",
-        isPrimary: false
+        id: "cs-hospitality",
+        number: "02",
+        industryTag: "Hospitality",
+        title: "Hospitality",
+        summary: "A complete growth strategy to boost bookings, brand visibility and direct engagement.",
+        resultMetric: "+140% Direct Bookings",
+        link: "/industries/hospitality",
+        variant: "arcs"
       }
     ]
   },
   faq: {
-    eyebrow: "05 — FREQUENTLY ASKED QUESTIONS",
+    eyebrow: "FAQS",
+    title: "Common questions about",
+    highlightWord: "industries.",
     titleLines: [
-      "Got Questions?",
-      "We've Got Answers."
+      "Common questions about",
+      "industries."
     ],
     subhead: "Quick answers to help you understand how we work across different industries.",
-    ctaText: "View All FAQs →",
+    ctaText: "Talk to our team",
     ctaHref: "/contact",
     items: [
       {
-        question: "Do you work with businesses in my industry?",
-        answer: "Yes, we work across multiple key industries including Manufacturing, Healthcare, E-commerce, Professional Services, B2B, and Hospitality, tailoring our approach to your unique market requirements."
+        question: "Which industries does ONYT work with?",
+        answer: "We specialize in high-growth, high-stakes verticals including E-Commerce, Healthcare, Real Estate, Manufacturing, SaaS & Technology, and Education."
       },
       {
-        question: "What types of businesses do you usually work with?",
-        answer: "We partner with ambitious mid-market companies, enterprise leaders, and high-growth brands looking to turn their digital presence into a measurable growth engine."
+        question: "Do you have experience in my specific industry?",
+        answer: "Yes. Across 250+ delivered projects, our senior cross-functional team has executed flagships, growth marketing, and custom web applications for both regulated enterprise sectors and agile D2C brands."
       },
       {
-        question: "Can you share examples from my industry?",
-        answer: "Absolutely. We have documented case studies and performance metrics across each industry we serve, demonstrating clear ROI and strategic impact."
+        question: "How do you tailor your approach for different industries?",
+        answer: "We conduct deep industry discovery into your sales cycles, buyer friction points, and customer lifetime value before proposing technology stacks or design directions."
       },
       {
-        question: "Do you offer industry-specific strategies?",
-        answer: "Every strategy is custom-crafted around your target audience, buying cycle, regulatory environment, and competitive landscape."
+        question: "Can you share relevant case studies for my industry?",
+        answer: "Absolutely. We provide private walkthroughs and in-depth performance breakdowns for prospective partners during our initial discovery call."
       }
-    ]
+    ],
+    testimonial: {
+      quote: "A partner who truly understands our industry and growth goals.",
+      author: "Marketing Head",
+      role: "Marketing Head",
+      company: "Real Estate Brand",
+      avatar: "/founder.jpg",
+      imageOverlayTitle: ["GREAT", "BUSINESSES", "GROW WITH", "GREAT", "PARTNERS."],
+      image: "/hero-workspace.jpg"
+    }
   },
   testimonial: {
     eyebrow: "06 — WHAT OUR CLIENTS SAY",
     item: {
-      quote: "ONYT understood our industry, our audience and our goals. The entire process was smooth, professional and result-driven.",
-      author: "Rahul Mehta",
-      role: "Director",
-      company: "Skyline Group",
+      quote: "A partner who truly understands our industry and growth goals.",
+      author: "Marketing Head",
+      role: "Marketing Head",
+      company: "Real Estate Brand",
       avatar: "/founder.jpg",
       imageOverlayTitle: ["GREAT", "BUSINESSES", "GROW WITH", "GREAT", "PARTNERS."],
       image: "/hero-workspace.jpg"
     }
   },
   finalCta: {
-    eyebrow: "07 — LET'S CREATE TOGETHER",
-    titleLines: [
-      "Your Industry.",
-      "Our Expertise."
-    ],
-    body: "Let's discuss how we can create digital growth opportunities for your business.",
-    primaryCtaText: "Let's Talk →",
-    primaryCtaHref: "/contact",
-    secondaryCtaText: "Explore Our Work →",
-    secondaryCtaHref: "/case-studies",
-    annotationLines: ["Ideas today.", "Growth", "tomorrow."],
-    image: "/cta-digital-flow.jpg"
+    title: "Let’s build industry-specific growth for your brand.",
+    ctaText: "Let's Talk",
+    ctaHref: "/contact",
+    primaryCtaText: "Let's Talk",
+    primaryCtaHref: "/contact"
   }
 };

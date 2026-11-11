@@ -1,177 +1,175 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { INDUSTRIES_PAGE_DATA } from './industriesData';
 
-const SECTOR_TAGS = [
-  'Hospitality & Dining',
-  'E-Commerce & Retail',
-  'SaaS & Enterprise',
-  'Healthcare & MedTech',
-  'Professional Services',
-  'Real Estate & Build',
-];
-
 export default function IndustryHero() {
   const { hero } = INDUSTRIES_PAGE_DATA;
-  const heroRef = useRef<HTMLElement>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    let ctx: gsap.Context | null = null;
-    const run = async () => {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      const { gsap } = await import('gsap');
-
-      if (!heroRef.current) return;
-
-      ctx = gsap.context(() => {
-        const elements = heroRef.current?.querySelectorAll('[data-hero-reveal]');
-        if (elements?.length) {
-          gsap.fromTo(
-            elements,
-            { opacity: 0, y: 35, scale: 0.98 },
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.9,
-              stagger: 0.1,
-              ease: 'power3.out',
-            }
-          );
-        }
-
-        if (cardRef.current) {
-          gsap.fromTo(
-            cardRef.current,
-            { opacity: 0, y: 45, scale: 0.95 },
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 1.1,
-              delay: 0.25,
-              ease: 'power4.out',
-            }
-          );
-        }
-      }, heroRef);
+    const handleMouseMove = (e: MouseEvent) => {
+      const { innerWidth, innerHeight } = window;
+      setMousePos({
+        x: (e.clientX / innerWidth) * 2 - 1,
+        y: (e.clientY / innerHeight) * 2 - 1,
+      });
     };
 
-    run();
-    return () => {
-      if (ctx) ctx.revert();
-    };
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
   return (
-    <section
-      ref={heroRef}
-      className="relative pt-28 sm:pt-32 md:pt-36 pb-16 md:pb-20 bg-[var(--bg)] text-[var(--fg)] overflow-hidden border-b border-[var(--ln)]"
-    >
-      <div className="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-12 items-center">
-          
-          {/* LEFT COLUMN */}
-          <div className="lg:col-span-6 space-y-7 z-10">
-            {/* Eyebrow badge */}
-            <div data-hero-reveal className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[var(--cd)] border border-[var(--ln)] shadow-xs">
-              <span className="w-2 h-2 rounded-full bg-[var(--ac)] animate-pulse" />
-              <span className="text-[11px] font-mono tracking-[0.2em] uppercase text-[var(--fg)]/70 font-bold">
-                {hero.eyebrow}
-              </span>
-            </div>
+    <section className="ind-hero">
+      {/* Background ambient warm radiant light bleed */}
+      <div
+        className="absolute inset-0 pointer-events-none transition-transform duration-700 ease-out z-0"
+        style={{
+          transform: `translate3d(${mousePos.x * 12}px, ${mousePos.y * 12}px, 0)`,
+        }}
+      >
+        {/* Soft bottom flare radiating up */}
+        <div className="absolute -bottom-24 left-[18%] w-[580px] h-[360px] bg-[radial-gradient(ellipse_at_center,rgba(255,77,0,0.32)_0%,rgba(255,77,0,0.08)_50%,transparent_75%)] blur-3xl pointer-events-none" />
+        <div className="absolute top-[12%] right-[22%] w-[420px] h-[300px] bg-[radial-gradient(ellipse_at_center,rgba(255,96,2,0.14)_0%,transparent_70%)] blur-2xl pointer-events-none" />
+      </div>
 
-            {/* Headline */}
-            <h1 
-              data-hero-reveal
-              className="text-[36px] sm:text-[48px] md:text-[56px] lg:text-[62px] font-bold leading-[0.96] tracking-[-0.04em] text-[var(--fg)] font-display"
-            >
-              Different Industries.<br />
-              <span className="text-[var(--ac)]">One Growth Engine.</span>
+      {/* Sweeping Parabolic Arc & Focal Node SVG */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <svg
+          viewBox="0 0 1440 760"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-full h-full object-cover"
+          preserveAspectRatio="none"
+        >
+          <defs>
+            <linearGradient id="heroArcGrad" x1="280" y1="720" x2="980" y2="110" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="var(--ac)" stopOpacity="0.05" />
+              <stop offset="25%" stopColor="var(--ac)" stopOpacity="0.45" />
+              <stop offset="65%" stopColor="#ff7a29" stopOpacity="0.95" />
+              <stop offset="100%" stopColor="#ffffff" stopOpacity="1" />
+            </linearGradient>
+            <filter id="arcGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="8" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+            <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#ffffff" />
+              <stop offset="40%" stopColor="var(--ac)" />
+              <stop offset="100%" stopColor="var(--ac)" stopOpacity="0" />
+            </radialGradient>
+            <linearGradient id="bottomBeamGrad" x1="420" y1="760" x2="680" y2="350" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="var(--ac)" stopOpacity="0.4" />
+              <stop offset="100%" stopColor="transparent" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+
+          {/* Luminous light cone rising from bottom edge */}
+          <polygon
+            points="340,760 760,280 840,320 520,760"
+            fill="url(#bottomBeamGrad)"
+            opacity="0.25"
+            filter="blur(24px)"
+          />
+
+          {/* Broad atmospheric soft arc */}
+          <path
+            d="M 160 700 C 440 660, 780 380, 980 110"
+            stroke="url(#heroArcGrad)"
+            strokeWidth="32"
+            strokeLinecap="round"
+            opacity="0.14"
+            filter="blur(18px)"
+          />
+
+          {/* Core sharp laser arc */}
+          <path
+            d="M 160 700 C 440 660, 780 380, 980 110"
+            stroke="url(#heroArcGrad)"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            filter="url(#arcGlow)"
+          />
+
+          {/* Glowing Focal Node at (980, 110) */}
+          <g>
+            <circle cx="980" cy="110" r="34" fill="url(#nodeGlow)" opacity="0.45" />
+            <circle cx="980" cy="110" r="8" fill="var(--ac)" />
+            <circle cx="980" cy="110" r="3.5" fill="#ffffff" />
+            <circle cx="980" cy="110" r="16" stroke="var(--ac)" strokeWidth="1" opacity="0.6">
+              <animate attributeName="r" values="8;24;8" dur="3s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.8;0;0.8" dur="3s" repeatCount="indefinite" />
+            </circle>
+          </g>
+        </svg>
+      </div>
+
+      {/* HERO 3-COLUMN STUDIO GRID */}
+      <div className="ind-hero-grid">
+        
+        {/* COLUMN 1: Eyebrow + 4-Line Editorial Headline */}
+        <div>
+          <div className="ey rv">Industries</div>
+
+          <div className="rv">
+            <h1 className="ind-hero-h1">
+              <span>Industry</span>
+              <span>expertise</span>
+              <span>that scales</span>
+              <span className="acc">brands.</span>
             </h1>
-
-            {/* Supporting Copy */}
-            <p
-              data-hero-reveal
-              className="text-base sm:text-[17px] text-[var(--fg)]/70 leading-relaxed max-w-[520px] font-normal"
-            >
-              {hero.body}
-            </p>
-
-            {/* Sector Tags Pills */}
-            <div data-hero-reveal className="flex flex-wrap gap-2 pt-1 max-w-lg">
-              {SECTOR_TAGS.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-[11.5px] font-semibold text-[var(--fg)]/80 bg-[var(--cd)] border border-[var(--ln)] px-3 py-1 rounded-full shadow-2xs hover:border-[var(--ac)] hover:text-[var(--ac)] transition-colors duration-200 cursor-default"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-
-            {/* CTA Buttons */}
-            <div data-hero-reveal className="flex items-center gap-4 pt-3">
-              <Link
-                href={hero.ctaHref}
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[var(--ac)] hover:bg-[var(--a2)] text-white text-xs sm:text-sm font-bold tracking-wide transition-all duration-300 shadow-[0_4px_20px_rgba(255,77,0,0.25)] hover:shadow-[0_6px_25px_rgba(255,77,0,0.4)] hover:-translate-y-0.5"
-              >
-                <span>{hero.ctaText}</span>
-                <span>&rarr;</span>
-              </Link>
-            </div>
           </div>
-
-          {/* RIGHT COLUMN: Layered Visual & Glassmorphism Badges */}
-          <div className="lg:col-span-6 relative mt-4 lg:mt-0">
-            <div ref={cardRef} className="relative rounded-2xl overflow-hidden shadow-2xl bg-[var(--cd)] border border-[var(--ln)] group">
-              <div className="aspect-[16/11] sm:aspect-[16/10] w-full relative">
-                <img
-                  src={hero.image}
-                  alt="ONYT Industries Architecture"
-                  className="w-full h-full object-cover object-center transition-transform duration-1000 group-hover:scale-[1.03]"
-                />
-                
-                {/* Soft daylight gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg)] via-black/20 to-transparent pointer-events-none" />
-
-                {/* Top Left Floating Badge */}
-                <div className="absolute top-5 left-5 bg-[var(--cd)]/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-[var(--ln)] shadow-md flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                  <span className="text-[11px] font-mono font-bold text-[var(--fg)] uppercase tracking-wider">
-                    6 Sector Hubs
-                  </span>
-                </div>
-
-                {/* Bottom Left Floating Stats Card */}
-                <div className="absolute bottom-6 left-6 bg-[var(--cd)]/95 backdrop-blur-md px-5 py-3.5 rounded-2xl border border-[var(--ln)] shadow-xl max-w-[240px] hidden sm:block">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[10px] font-bold text-[var(--ac)] uppercase tracking-wider">PROVEN IMPACT</span>
-                  </div>
-                  <p className="text-[20px] font-bold text-[var(--fg)] tracking-tight leading-none mb-1 font-display">
-                    +240% Growth
-                  </p>
-                  <p className="text-[11px] text-[var(--fg)]/60 leading-tight">
-                    Average revenue expansion across enterprise industry clients.
-                  </p>
-                </div>
-
-                {/* Top Right Cursive Editorial Overlay */}
-                <div className="absolute top-6 right-6 text-right pointer-events-none">
-                  <p className="font-serif italic text-white/95 text-xl sm:text-2xl leading-snug drop-shadow-md">
-                    Targeted.<br />
-                    Scalable.<br />
-                    <span className="underline decoration-white/50 underline-offset-4">Proven.</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
+
+        {/* COLUMN 2: Center-Right Narrative & Explore Action */}
+        <div className="ind-hero-mid rv">
+          <p>
+            {hero.body}
+          </p>
+
+          <a href="#explorer" className="pill">
+            <span>Explore Industries ↘</span>
+          </a>
+        </div>
+
+        {/* COLUMN 3: Right Vertical Stacked Metric Cards */}
+        <div className="ind-hero-kpi-stack rv">
+          {/* KPI 1 */}
+          <div className="ind-hero-kpi-cell">
+            <div data-n="6" className="ind-hero-kpi-num">
+              06
+            </div>
+            <div className="ind-hero-kpi-lbl">
+              Industries
+            </div>
+          </div>
+
+          {/* KPI 2 */}
+          <div className="ind-hero-kpi-cell">
+            <div data-n="250" data-s="+" className="ind-hero-kpi-num">
+              250+
+            </div>
+            <div className="ind-hero-kpi-lbl">
+              Projects
+            </div>
+          </div>
+
+          {/* KPI 3 */}
+          <div className="ind-hero-kpi-cell">
+            <div data-n="3.5" data-s="×" className="ind-hero-kpi-num">
+              3.5×
+            </div>
+            <div className="ind-hero-kpi-lbl">
+              Avg. growth
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
   );

@@ -6,7 +6,6 @@ import About from '@/components/About';
 import Expand from '@/components/Expand';
 import Services from '@/components/Services';
 import Work from '@/components/Work';
-import Stats from '@/components/Stats';
 import Process from '@/components/Process';
 import Capabilities from '@/components/Capabilities';
 import Testimonials from '@/components/Testimonials';
@@ -36,7 +35,6 @@ export default function Home() {
         <Expand />
         <Services />
         <Work />
-        <Stats />
         <Process />
         <Capabilities />
         <Testimonials />

@@ -87,7 +87,7 @@ function ReportModal({
             <Flag size={16} className="text-[var(--ac)]" />
             <h3 className="font-bold text-[var(--fg)] text-base">Report Comment</h3>
           </div>
-          <button onClick={onClose} className="w-7 h-7 rounded-full flex items-center justify-center text-zinc-400 hover:bg-zinc-800 transition-colors cursor-pointer">
+          <button onClick={onClose} className="w-7 h-7 rounded-full flex items-center justify-center text-[var(--mut)] hover:bg-[var(--ln)] transition-colors cursor-pointer">
             <X size={15} />
           </button>
         </div>
@@ -98,14 +98,14 @@ function ReportModal({
               <Check size={24} className="text-emerald-500" />
             </div>
             <h4 className="font-bold text-[var(--fg)] mb-1">Report submitted</h4>
-            <p className="text-sm text-zinc-400 mb-5">Thank you. Our team will review this comment.</p>
+            <p className="text-sm text-[var(--mut)] mb-5">Thank you. Our team will review this comment.</p>
             <button onClick={onClose} className="bg-[var(--ac)] text-white px-6 py-2 rounded-full text-sm font-bold hover:bg-[var(--a2)] transition-all cursor-pointer">
               Done
             </button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
-            <p className="text-sm text-zinc-400">Why are you reporting this comment by <span className="font-semibold text-[var(--fg)]">{commentAuthor}</span>?</p>
+            <p className="text-sm text-[var(--mut)]">Why are you reporting this comment by <span className="font-semibold text-[var(--fg)]">{commentAuthor}</span>?</p>
             <div className="space-y-2">
               {REPORT_REASONS.map(reason => (
                 <label key={reason} className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${selected === reason ? "border-[var(--ac)]/60 bg-[var(--ac)]/10" : "border-[var(--ln)] hover:border-[var(--ac)]/30"}`}>
@@ -121,11 +121,11 @@ function ReportModal({
                 placeholder="Describe the issue..."
                 rows={3}
                 required
-                className="w-full px-3 py-2.5 rounded-xl border border-[var(--ln)] bg-[var(--bg)] text-sm text-[var(--fg)] placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-[var(--ac)] focus:border-[var(--ac)] resize-none"
+                className="w-full px-3 py-2.5 rounded-xl border border-[var(--ln)] bg-[var(--bg)] text-sm text-[var(--fg)] placeholder:text-[var(--mut)] focus:outline-none focus:ring-1 focus:ring-[var(--ac)] focus:border-[var(--ac)] resize-none"
               />
             )}
             <div className="flex gap-3 pt-1">
-              <button type="button" onClick={onClose} className="flex-1 py-2.5 rounded-full border border-[var(--ln)] text-sm font-bold text-zinc-400 hover:bg-zinc-800 transition-all cursor-pointer">
+              <button type="button" onClick={onClose} className="flex-1 py-2.5 rounded-full border border-[var(--ln)] text-sm font-bold text-[var(--mut)] hover:bg-[var(--ln)] transition-all cursor-pointer">
                 Cancel
               </button>
               <button type="submit" disabled={!selected || submitting} className="flex-1 py-2.5 rounded-full bg-[var(--ac)] text-white text-sm font-bold hover:bg-[var(--a2)] transition-all disabled:opacity-50 cursor-pointer">
@@ -190,13 +190,13 @@ function CommentItem({ comment, replies, blog, user, profile, isRealUser, likesC
           <div className="flex items-start justify-between gap-2 mb-1">
             <div>
               <h4 className="font-extrabold text-[var(--fg)] text-base">{comment.name}</h4>
-              <p className="text-[11px] text-zinc-400 font-semibold mt-0.5 font-mono">{formatDate(comment.createdAt)}</p>
+              <p className="text-[11px] text-[var(--mut)] font-semibold mt-0.5 font-mono">{formatDate(comment.createdAt)}</p>
             </div>
             {/* Actions: like + report */}
             <div className="flex items-center gap-1 shrink-0">
               <button
                 onClick={() => onLikeToggle(comment._id)}
-                className={`flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${userLikes[comment._id] ? "text-red-500" : "text-zinc-400 hover:text-[var(--fg)]"}`}
+                className={`flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${userLikes[comment._id] ? "text-red-500" : "text-[var(--mut)] hover:text-[var(--fg)]"}`}
               >
                 <Heart size={12} className={userLikes[comment._id] ? "fill-red-500" : ""} />
                 <span>{likesCounts[comment._id] || 0}</span>
@@ -204,7 +204,7 @@ function CommentItem({ comment, replies, blog, user, profile, isRealUser, likesC
               <button
                 onClick={() => setReportTarget({ id: comment._id, author: comment.name })}
                 title="Report this comment"
-                className="w-7 h-7 rounded-lg flex items-center justify-center text-zinc-400 hover:text-[var(--ac)] hover:bg-[var(--ac)]/10 transition-all cursor-pointer"
+                className="w-7 h-7 rounded-lg flex items-center justify-center text-[var(--mut)] hover:text-[var(--ac)] hover:bg-[var(--ac)]/10 transition-all cursor-pointer"
               >
                 <Flag size={12} />
               </button>
@@ -217,12 +217,12 @@ function CommentItem({ comment, replies, blog, user, profile, isRealUser, likesC
           {/* Reply button */}
           <div className="flex items-center gap-4">
             {isRealUser && (
-              <button onClick={() => setShowReplyForm(v => !v)} className="text-[11px] font-bold text-zinc-400 hover:text-[var(--ac)] transition-colors cursor-pointer">
+              <button onClick={() => setShowReplyForm(v => !v)} className="text-[11px] font-bold text-[var(--mut)] hover:text-[var(--ac)] transition-colors cursor-pointer">
                 {showReplyForm ? "Cancel" : "↩ Reply"}
               </button>
             )}
             {replies.length > 0 && (
-              <button onClick={() => setShowReplies(v => !v)} className="flex items-center gap-1 text-[11px] font-bold text-zinc-400 hover:text-[var(--ac)] transition-colors cursor-pointer">
+              <button onClick={() => setShowReplies(v => !v)} className="flex items-center gap-1 text-[11px] font-bold text-[var(--mut)] hover:text-[var(--ac)] transition-colors cursor-pointer">
                 <ChevronDown size={12} className={`transition-transform ${showReplies ? "rotate-180" : ""}`} />
                 {replies.length} {replies.length === 1 ? "reply" : "replies"}
               </button>
@@ -234,7 +234,7 @@ function CommentItem({ comment, replies, blog, user, profile, isRealUser, likesC
             <div className="mt-4">
               {isRealUser ? (
                 <form onSubmit={handleReply} className="space-y-3">
-                  <div className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-[var(--mut)]">
                     Replying as <span className="text-[var(--fg)] normal-case tracking-normal">{profile?.name || user?.displayName || user?.email?.split("@")[0] || "User"}</span>
                   </div>
                   <textarea
@@ -244,20 +244,20 @@ function CommentItem({ comment, replies, blog, user, profile, isRealUser, likesC
                     rows={3}
                     required
                     autoFocus
-                    className="w-full px-4 py-3 rounded-xl border border-[var(--ln)] bg-[var(--bg)] text-[var(--fg)] placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-[var(--ac)] focus:border-[var(--ac)] transition-all resize-none text-sm font-semibold"
+                    className="w-full px-4 py-3 rounded-xl border border-[var(--ln)] bg-[var(--bg)] text-[var(--fg)] placeholder:text-[var(--mut)] focus:outline-none focus:ring-1 focus:ring-[var(--ac)] focus:border-[var(--ac)] transition-all resize-none text-sm font-semibold"
                   />
                   <div className="flex gap-2">
                     <button type="submit" disabled={submittingReply} className="bg-[var(--ac)] text-white px-6 py-2 rounded-full text-xs font-bold hover:bg-[var(--a2)] disabled:opacity-50 transition-all cursor-pointer">
                       {submittingReply ? "Posting…" : "Post Reply"}
                     </button>
-                    <button type="button" onClick={() => { setShowReplyForm(false); setReplyText(""); }} className="px-6 py-2 rounded-full border border-[var(--ln)] text-xs font-bold text-zinc-400 hover:text-[var(--fg)] transition-all cursor-pointer">
+                    <button type="button" onClick={() => { setShowReplyForm(false); setReplyText(""); }} className="px-6 py-2 rounded-full border border-[var(--ln)] text-xs font-bold text-[var(--mut)] hover:text-[var(--fg)] transition-all cursor-pointer">
                       Cancel
                     </button>
                   </div>
                 </form>
               ) : (
                 <div className="mt-2 p-4 border border-[var(--ln)] rounded-xl bg-[var(--bg)] text-center">
-                  <p className="text-xs font-semibold text-zinc-400 mb-2">Sign in to reply</p>
+                  <p className="text-xs font-semibold text-[var(--mut)] mb-2">Sign in to reply</p>
                   <Link href={`/login?required=comment&redirect=${encodeURIComponent(typeof window !== "undefined" ? window.location.pathname : "/blogs")}`} className="inline-block bg-[var(--ac)] text-white px-4 py-1.5 rounded-full text-xs font-bold hover:bg-[var(--a2)] transition-all">Sign In</Link>
                 </div>
               )}
@@ -276,9 +276,9 @@ function CommentItem({ comment, replies, blog, user, profile, isRealUser, likesC
                     <div className="flex items-center justify-between gap-2">
                       <div>
                         <span className="font-extrabold text-[var(--fg)] text-sm">{reply.name}</span>
-                        <span className="ml-2 text-[10px] text-zinc-400 font-semibold font-mono">{formatDate(reply.createdAt)}</span>
+                        <span className="ml-2 text-[10px] text-[var(--mut)] font-semibold font-mono">{formatDate(reply.createdAt)}</span>
                       </div>
-                      <button onClick={() => setReportTarget({ id: reply._id, author: reply.name })} title="Report" className="text-zinc-400 hover:text-[var(--ac)] transition-colors cursor-pointer">
+                      <button onClick={() => setReportTarget({ id: reply._id, author: reply.name })} title="Report" className="text-[var(--mut)] hover:text-[var(--ac)] transition-colors cursor-pointer">
                         <Flag size={11} />
                       </button>
                     </div>
@@ -456,12 +456,17 @@ function BlogDetails({ blog }: { blog: any }) {
 
   /* ══════════════════════════════════════════════ RENDER ══════════════════════════════════════════════ */
   return (
-    <article className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-14 text-left">
+    <article className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 py-8 md:py-14 text-left">
 
       {/* Back */}
       <div className="mb-8">
-        <Link href="/blogs" className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-zinc-400 hover:text-[var(--ac)] transition-colors group">
-          <ArrowLeft size={13} className="group-hover:-translate-x-0.5 transition-transform" /> All Blogs
+        <Link
+          href="/blogs"
+          className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[var(--mut)] hover:text-[var(--ac)] transition-colors group"
+          style={{ fontFamily: 'var(--b)' }}
+        >
+          <ArrowLeft size={13} className="group-hover:-translate-x-1 transition-transform text-[var(--ac)]" />
+          <span>Back to All Articles</span>
         </Link>
       </div>
 
@@ -469,15 +474,16 @@ function BlogDetails({ blog }: { blog: any }) {
       <div className="flex flex-col lg:flex-row gap-10 xl:gap-16 items-start">
 
         {/* ─── LEFT: Sticky TOC (Cofounder Editorial Style) ─── */}
-        <aside className="hidden lg:block w-[260px] shrink-0 sticky top-28 max-h-[calc(100vh-140px)] overflow-y-auto scrollbar-none space-y-6 pr-2">
+        <aside className="hidden lg:block w-[280px] shrink-0 sticky top-28 max-h-[calc(100vh-140px)] overflow-y-auto scrollbar-none space-y-6 pr-2">
           {/* Subtitle & CTA Button */}
-          <div className="space-y-3 pb-5 border-b border-[var(--ln)]">
-            <p className="text-xs font-semibold text-zinc-400 leading-snug">
+          <div className="space-y-3 pb-5 border-b border-[var(--ln)] bg-[var(--cd)] p-5 rounded-[20px] border border-[var(--ln)]">
+            <p className="text-xs font-medium text-[var(--mut)] leading-snug" style={{ fontFamily: 'var(--b)' }}>
               Partner with ONYT to scale your brand & digital systems
             </p>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-1.5 bg-[var(--ac)] hover:bg-[var(--a2)] text-white px-4 py-2 rounded-xl text-xs font-bold shadow-[0_4px_15px_rgba(255,77,0,0.25)] transition-all group cursor-pointer"
+              className="btn py-2 px-4 text-xs font-semibold"
+              style={{ fontFamily: 'var(--b)' }}
             >
               <span>Let's Talk</span>
               <span className="text-xs transition-transform group-hover:translate-x-0.5">&rarr;</span>
@@ -487,8 +493,8 @@ function BlogDetails({ blog }: { blog: any }) {
           {/* Grouped Table of Contents */}
           <nav className="space-y-4">
             <div className="space-y-2">
-              <div className="text-xs font-extrabold text-[var(--fg)] flex items-center gap-1.5">
-                <span className="text-[var(--ac)] font-bold text-[11px]">(I)</span>
+              <div className="text-xs font-extrabold uppercase tracking-wider text-[var(--fg)] flex items-center gap-2" style={{ fontFamily: 'var(--b)' }}>
+                <span className="text-[var(--ac)] font-bold text-[11px] font-mono">(I)</span>
                 <span>On this page</span>
               </div>
 
@@ -502,15 +508,16 @@ function BlogDetails({ blog }: { blog: any }) {
                         onClick={e => handleHeadingClick(e, h.id)}
                         className={`group flex items-center gap-2.5 text-xs py-1.5 px-3 rounded-xl transition-all ${
                           active
-                            ? "border border-[var(--ac)] bg-[var(--cd)] text-[var(--fg)] font-extrabold shadow-xs"
-                            : "text-zinc-400 hover:text-[var(--fg)] font-medium"
+                            ? "border border-[var(--ac)] bg-[var(--ac)]/10 text-[var(--fg)] font-bold shadow-xs"
+                            : "text-[var(--mut)] hover:text-[var(--fg)] font-medium"
                         }`}
+                        style={{ fontFamily: 'var(--b)' }}
                       >
                         <span
                           className={`w-2 h-2 rounded-full shrink-0 border transition-all ${
                             active
                               ? "border-[var(--ac)] bg-[var(--ac)]"
-                              : "border-zinc-600 bg-transparent group-hover:border-zinc-400"
+                              : "border-[var(--ln)] bg-transparent group-hover:border-[var(--ac)]"
                           }`}
                         />
                         <span className="truncate">{h.text}</span>
@@ -530,13 +537,13 @@ function BlogDetails({ blog }: { blog: any }) {
           {headings.length >= 2 && (
             <div className="lg:hidden mb-8 border border-[var(--ln)] rounded-2xl overflow-hidden bg-[var(--cd)] shadow-xs">
               <details className="group">
-                <summary className="flex items-center justify-between px-4 py-3 cursor-pointer select-none font-bold text-[11px] uppercase tracking-wider text-zinc-400 bg-[var(--bg)]">
+                <summary className="flex items-center justify-between px-4 py-3 cursor-pointer select-none font-bold text-[11px] uppercase tracking-wider text-[var(--mut)] bg-[var(--bg)]">
                   <span>On this page</span>
-                  <ChevronDown size={14} className="transition-transform group-open:rotate-180 text-zinc-400" />
+                  <ChevronDown size={14} className="transition-transform group-open:rotate-180 text-[var(--mut)]" />
                 </summary>
                 <nav className="px-4 pb-4 pt-3 border-t border-[var(--ln)] space-y-2">
                   {headingListWithRoman.map(h => (
-                    <a key={h.id} href={`#${h.id}`} onClick={e => handleHeadingClick(e, h.id)} className={`flex items-center gap-2 text-xs transition-colors py-1 ${h.level === 3 ? "pl-4 text-zinc-500" : "font-semibold"} ${activeHeadingId === h.id ? "text-[var(--ac)] font-bold" : "text-zinc-400"}`}>
+                    <a key={h.id} href={`#${h.id}`} onClick={e => handleHeadingClick(e, h.id)} className={`flex items-center gap-2 text-xs transition-colors py-1 ${h.level === 3 ? "pl-4 text-[var(--mut)]" : "font-semibold"} ${activeHeadingId === h.id ? "text-[var(--ac)] font-bold" : "text-[var(--mut)]"}`}>
                       <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${activeHeadingId === h.id ? "bg-[var(--ac)]" : "bg-zinc-600"}`} />
                       <span>{h.text}</span>
                     </a>
@@ -550,25 +557,31 @@ function BlogDetails({ blog }: { blog: any }) {
           <header className="mb-10">
             {/* Chapter / Category Pill Badge */}
             <div className="mb-4">
-              <span className="inline-block bg-zinc-200/70 dark:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300 px-3.5 py-1 rounded-full text-xs font-bold tracking-wide border border-zinc-300/40 dark:border-zinc-700/40">
-                {typeof blog.category === "object" && blog.category ? blog.category.name : (blog.category || blog.categoryName || "Chapter I")}
+              <span 
+                className="inline-flex items-center gap-2 bg-[var(--ac)]/15 text-[var(--ac)] border border-[var(--ac)]/30 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider font-mono"
+                style={{ fontFamily: 'var(--b)' }}
+              >
+                {typeof blog.category === "object" && blog.category ? blog.category.name : (blog.category || blog.categoryName || "Article")}
               </span>
             </div>
 
             {/* Main Article Title */}
-            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-zinc-900 dark:text-white leading-[1.12] mb-6">
+            <h1 
+              className="text-[32px] sm:text-[44px] lg:text-[54px] font-extrabold tracking-[-0.03em] text-[var(--fg)] leading-[1.08] mb-6"
+              style={{ fontFamily: 'var(--d)' }}
+            >
               {blog.title}
             </h1>
 
             {/* Author + date + read time + share row */}
-            <div className="flex items-center justify-between flex-wrap gap-4 pt-2 border-t border-zinc-200/80 dark:border-zinc-800">
+            <div className="flex items-center justify-between flex-wrap gap-4 pt-4 border-t border-[var(--ln)]">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+                <div className="w-10 h-10 rounded-full bg-[var(--cd)] border border-[var(--ln)] text-[var(--fg)] flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
                   {authorName.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <p className="font-bold text-zinc-900 dark:text-white text-xs">{authorName}</p>
-                  <p className="text-[11px] text-zinc-500 font-medium flex items-center gap-2 mt-0.5">
+                  <p className="font-bold text-[var(--fg)] text-sm" style={{ fontFamily: 'var(--b)' }}>{authorName}</p>
+                  <p className="text-[11px] text-[var(--mut)] font-mono flex items-center gap-2 mt-0.5">
                     <span>{formatDate(blog.createdAt)}</span>
                     <span>·</span>
                     <span className="flex items-center gap-1"><Clock size={11} /> {readTime} min read</span>
@@ -578,12 +591,12 @@ function BlogDetails({ blog }: { blog: any }) {
 
               {/* Share buttons */}
               <div className="flex items-center gap-2">
-                <span className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">Share:</span>
-                <button onClick={() => shareTwitter(blog.title, currentUrl)} title="Share on X/Twitter" className="w-8 h-8 rounded-full border border-zinc-300 dark:border-zinc-700 flex items-center justify-center text-zinc-700 dark:text-zinc-300 hover:bg-zinc-900 hover:text-white dark:hover:bg-white dark:hover:text-zinc-950 transition-all font-bold text-[10px] cursor-pointer">TW</button>
-                <button onClick={() => shareFacebook(currentUrl)} title="Share on Facebook" className="w-8 h-8 rounded-full border border-zinc-300 dark:border-zinc-700 flex items-center justify-center text-zinc-700 dark:text-zinc-300 hover:bg-zinc-900 hover:text-white dark:hover:bg-white dark:hover:text-zinc-950 transition-all font-bold text-[10px] cursor-pointer">FB</button>
-                <button onClick={() => shareLinkedIn(currentUrl)} title="Share on LinkedIn" className="w-8 h-8 rounded-full border border-zinc-300 dark:border-zinc-700 flex items-center justify-center text-zinc-700 dark:text-zinc-300 hover:bg-zinc-900 hover:text-white dark:hover:bg-white dark:hover:text-zinc-950 transition-all font-bold text-[10px] cursor-pointer">LI</button>
-                <button onClick={() => shareWhatsApp(blog.title, currentUrl)} title="Share on WhatsApp" className="w-8 h-8 rounded-full border border-zinc-300 dark:border-zinc-700 flex items-center justify-center text-zinc-700 dark:text-zinc-300 hover:bg-zinc-900 hover:text-white dark:hover:bg-white dark:hover:text-zinc-950 transition-all font-bold text-[10px] cursor-pointer">WA</button>
-                <button onClick={handleCopyLink} title="Copy link" className="w-8 h-8 rounded-full border border-zinc-300 dark:border-zinc-700 flex items-center justify-center text-zinc-700 dark:text-zinc-300 hover:bg-zinc-900 hover:text-white dark:hover:bg-white dark:hover:text-zinc-950 transition-all cursor-pointer">
+                <span className="text-[11px] text-[var(--mut)] font-bold uppercase tracking-wider font-mono">Share:</span>
+                <button onClick={() => shareTwitter(blog.title, currentUrl)} title="Share on X/Twitter" className="w-8 h-8 rounded-full border border-[var(--ln)] bg-[var(--cd)] flex items-center justify-center text-[var(--mut)] hover:text-[var(--ac)] hover:border-[var(--ac)] transition-all font-bold text-[10px] cursor-pointer">TW</button>
+                <button onClick={() => shareFacebook(currentUrl)} title="Share on Facebook" className="w-8 h-8 rounded-full border border-[var(--ln)] bg-[var(--cd)] flex items-center justify-center text-[var(--mut)] hover:text-[var(--ac)] hover:border-[var(--ac)] transition-all font-bold text-[10px] cursor-pointer">FB</button>
+                <button onClick={() => shareLinkedIn(currentUrl)} title="Share on LinkedIn" className="w-8 h-8 rounded-full border border-[var(--ln)] bg-[var(--cd)] flex items-center justify-center text-[var(--mut)] hover:text-[var(--ac)] hover:border-[var(--ac)] transition-all font-bold text-[10px] cursor-pointer">LI</button>
+                <button onClick={() => shareWhatsApp(blog.title, currentUrl)} title="Share on WhatsApp" className="w-8 h-8 rounded-full border border-[var(--ln)] bg-[var(--cd)] flex items-center justify-center text-[var(--mut)] hover:text-[var(--ac)] hover:border-[var(--ac)] transition-all font-bold text-[10px] cursor-pointer">WA</button>
+                <button onClick={handleCopyLink} title="Copy link" className="w-8 h-8 rounded-full border border-[var(--ln)] bg-[var(--cd)] flex items-center justify-center text-[var(--mut)] hover:text-[var(--ac)] hover:border-[var(--ac)] transition-all cursor-pointer">
                   {copied ? <Check size={12} className="text-green-500" /> : <Copy size={12} />}
                 </button>
               </div>
@@ -592,31 +605,37 @@ function BlogDetails({ blog }: { blog: any }) {
 
           {/* ══ FEATURED IMAGE ══ */}
           {blog.featuredImage && (
-            <div className="w-full aspect-[21/9] bg-zinc-200 dark:bg-zinc-900 rounded-2xl overflow-hidden mb-12 relative border border-zinc-300/80 dark:border-zinc-800 shadow-xs">
-              <Image src={blog.featuredImage} alt={blog.title} fill className="object-cover" priority sizes="(max-width: 768px) 100vw, 1200px" />
+            <div className="w-full aspect-[21/9] sm:aspect-[2/1] bg-[var(--cd)] rounded-[24px] overflow-hidden mb-12 relative border border-[var(--ln)] shadow-md">
+              <Image src={blog.featuredImage} alt={blog.title} fill className="object-cover object-top" priority sizes="(max-width: 768px) 100vw, 1200px" />
             </div>
           )}
 
           {/* ══ EXCERPT ══ */}
           {blog.excerpt && (
-            <div className="text-lg md:text-xl text-zinc-600 dark:text-zinc-300 font-normal leading-relaxed mb-10 border-l-2 border-zinc-900 dark:border-zinc-300 pl-6">
+            <div 
+              className="text-lg md:text-xl text-[var(--fg)]/85 font-normal leading-relaxed mb-10 border-l-2 border-[var(--ac)] pl-6 italic"
+              style={{ fontFamily: 'var(--b)' }}
+            >
               {blog.excerpt}
             </div>
           )}
 
           {/* ══ RICH CONTENT ══ */}
-          <div className="prose prose-lg prose-neutral dark:prose-invert max-w-none text-zinc-800 dark:text-zinc-200
-            [&_.ProseMirror]:bg-transparent [&_.ProseMirror]:border-none [&_.ProseMirror]:text-zinc-800 dark:[&_.ProseMirror]:text-zinc-200 [&_.ProseMirror]:px-0 [&_.ProseMirror]:py-0 [&_.ProseMirror]:min-h-0 focus:outline-none select-none
-            [&_p]:text-[17px] [&_p]:leading-[1.85] [&_p]:text-zinc-700 dark:[&_p]:text-zinc-300 [&_p]:mb-6
-            [&_h2]:text-[26px] [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:text-zinc-900 dark:[&_h2]:text-white [&_h2]:mt-12 [&_h2]:mb-4
-            [&_h3]:text-[21px] [&_h3]:font-semibold [&_h3]:text-zinc-900 dark:[&_h3]:text-white [&_h3]:mt-8 [&_h3]:mb-3
-            [&_blockquote]:border-l-2 [&_blockquote]:border-zinc-900 dark:[&_blockquote]:border-zinc-300 [&_blockquote]:pl-6 [&_blockquote]:italic [&_blockquote]:my-8 [&_blockquote]:text-zinc-700 dark:[&_blockquote]:text-zinc-300
+          <div 
+            className="prose prose-lg max-w-none text-[var(--fg)]/85
+            [&_.ProseMirror]:bg-transparent [&_.ProseMirror]:border-none [&_.ProseMirror]:text-[var(--fg)]/85 [&_.ProseMirror]:px-0 [&_.ProseMirror]:py-0 [&_.ProseMirror]:min-h-0 focus:outline-none select-none
+            [&_p]:text-[17px] [&_p]:leading-[1.85] [&_p]:text-[var(--fg)]/85 [&_p]:mb-6
+            [&_h2]:text-[26px] sm:[&_h2]:text-[32px] [&_h2]:font-bold [&_h2]:tracking-[-0.02em] [&_h2]:text-[var(--fg)] [&_h2]:mt-12 [&_h2]:mb-4
+            [&_h3]:text-[21px] sm:[&_h3]:text-[24px] [&_h3]:font-bold [&_h3]:tracking-[-0.02em] [&_h3]:text-[var(--fg)] [&_h3]:mt-8 [&_h3]:mb-3
+            [&_blockquote]:border-l-2 [&_blockquote]:border-[var(--ac)] [&_blockquote]:pl-6 [&_blockquote]:italic [&_blockquote]:my-8 [&_blockquote]:text-[var(--fg)]/90
             [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-6 [&_ul]:space-y-2.5
             [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-6 [&_ol]:space-y-2.5
-            [&_li]:text-[16px] [&_li]:leading-relaxed [&_li]:text-zinc-700 dark:[&_li]:text-zinc-300
-            [&_img]:rounded-2xl [&_img]:border [&_img]:border-zinc-300/80 dark:[&_img]:border-zinc-800 [&_img]:shadow-xs [&_img]:my-8
+            [&_li]:text-[16px] [&_li]:leading-relaxed [&_li]:text-[var(--fg)]/85
+            [&_img]:rounded-2xl [&_img]:border [&_img]:border-[var(--ln)] [&_img]:shadow-md [&_img]:my-8
             [&_a]:text-[var(--ac)] [&_a]:no-underline hover:[&_a]:underline [&_a]:font-semibold
-          ">
+          "
+            style={{ fontFamily: 'var(--b)' }}
+          >
             {typeof blog.content === 'string' && blog.content.startsWith('<') ? (
               <div dangerouslySetInnerHTML={{ __html: blog.content }} />
             ) : (
@@ -628,9 +647,9 @@ function BlogDetails({ blog }: { blog: any }) {
           {blog.tags && blog.tags.length > 0 && (
             <div className="mt-16 pt-8 border-t border-[var(--ln)]">
               <div className="flex items-center gap-3 flex-wrap">
-                <Tag size={16} className="text-zinc-400 dark:text-zinc-550" />
+                <Tag size={16} className="text-[var(--mut)]" />
                 {blog.tags.map((tag: any, idx: number) => (
-                  <span key={idx} className="bg-[var(--cd)] text-zinc-300 px-4 py-1.5 rounded-full text-xs font-extrabold hover:bg-[var(--ac)]/15 hover:text-[var(--ac)] transition-colors border border-[var(--ln)] hover:border-[var(--ac)]/40 cursor-pointer">
+                  <span key={idx} className="bg-[var(--cd)] text-[var(--mut)] px-4 py-1.5 rounded-full text-xs font-semibold hover:bg-[var(--ac)]/15 hover:text-[var(--ac)] transition-colors border border-[var(--ln)] hover:border-[var(--ac)]/40 cursor-pointer" style={{ fontFamily: 'var(--b)' }}>
                     {tag.tag || tag}
                   </span>
                 ))}
@@ -642,18 +661,21 @@ function BlogDetails({ blog }: { blog: any }) {
           <div className="mt-10 pt-8 border-t border-[var(--ln)] flex items-center gap-4">
             <button
               onClick={handleArticleLike}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-full border transition-all text-sm font-bold cursor-pointer select-none ${articleLiked ? "border-red-400 bg-red-500/10 text-red-400" : "border-[var(--ln)] text-zinc-400 hover:border-red-400 hover:text-red-400"}`}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-full border transition-all text-sm font-bold cursor-pointer select-none ${articleLiked ? "border-red-400 bg-red-500/10 text-red-400" : "border-[var(--ln)] text-[var(--mut)] hover:border-red-400 hover:text-red-400"}`}
             >
               <Heart size={15} className={articleLiked ? "fill-red-500 text-red-500" : ""} />
               <span>{articleLiked ? "Liked" : "Like this article"}</span>
-              {articleLikeCount > 0 && <span className="ml-1 bg-zinc-800 text-zinc-300 px-1.5 py-0.5 rounded-full text-[10px] font-extrabold">{articleLikeCount}</span>}
+              {articleLikeCount > 0 && <span className="ml-1 bg-[var(--cd)] text-[var(--fg)] px-1.5 py-0.5 rounded-full text-[10px] font-extrabold border border-[var(--ln)]">{articleLikeCount}</span>}
             </button>
-            <span className="text-xs text-zinc-400">Did you find this useful?</span>
+            <span className="text-xs text-[var(--mut)]" style={{ fontFamily: 'var(--b)' }}>Did you find this useful?</span>
           </div>
 
           {/* ══ DISCUSSION / COMMENTS ══ */}
           <div className="mt-16 pt-12 border-t border-[var(--ln)] space-y-10">
-            <h3 className="text-2xl font-[850] font-display text-white tracking-tight">
+            <h3 
+              className="text-2xl sm:text-3xl font-extrabold text-[var(--fg)] tracking-tight"
+              style={{ fontFamily: 'var(--d)' }}
+            >
               Discussion ({comments.filter((c: any) => !c.parentId).length})
             </h3>
 
@@ -675,7 +697,7 @@ function BlogDetails({ blog }: { blog: any }) {
                 />
               ))}
               {commentsLoaded && comments.filter((c: any) => !c.parentId).length === 0 && (
-                <p className="text-zinc-500 italic text-sm">No comments yet. Be the first to share your thoughts!</p>
+                <p className="text-[var(--mut)] italic text-sm" style={{ fontFamily: 'var(--b)' }}>No comments yet. Be the first to share your thoughts!</p>
               )}
             </div>
 
@@ -683,10 +705,15 @@ function BlogDetails({ blog }: { blog: any }) {
             <div className="bg-[var(--cd)] p-6 md:p-8 rounded-[28px] border border-[var(--ln)] shadow-sm">
               <div className="flex items-center justify-between flex-wrap gap-3 mb-6 pb-4 border-b border-[var(--ln)]">
                 <div>
-                  <h4 className="font-[850] font-display text-white text-xl tracking-tight">Add a comment</h4>
+                  <h4 
+                    className="font-extrabold text-[var(--fg)] text-xl tracking-tight"
+                    style={{ fontFamily: 'var(--d)' }}
+                  >
+                    Add a comment
+                  </h4>
                   {isRealUser && (
-                    <p className="text-xs text-zinc-400 font-medium mt-0.5">
-                      Signed in as <span className="font-bold text-white">{profile?.name || user?.displayName || user?.email}</span>
+                    <p className="text-xs text-[var(--mut)] font-medium mt-0.5" style={{ fontFamily: 'var(--b)' }}>
+                      Signed in as <span className="font-bold text-[var(--fg)]">{profile?.name || user?.displayName || user?.email}</span>
                     </p>
                   )}
                 </div>
@@ -706,7 +733,7 @@ function BlogDetails({ blog }: { blog: any }) {
                         console.error("Failed to sign out:", err);
                       }
                     }}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold text-zinc-400 hover:text-red-400 hover:bg-red-950/20 transition-all border border-[var(--ln)] cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold text-[var(--mut)] hover:text-red-400 hover:bg-red-950/20 transition-all border border-[var(--ln)] cursor-pointer"
                   >
                     <LogOut size={13} />
                     <span>Sign Out</span>
@@ -717,7 +744,7 @@ function BlogDetails({ blog }: { blog: any }) {
               {isRealUser ? (
                 <form onSubmit={handleAddComment} className="flex flex-col gap-5">
                   <div>
-                    <label className="block text-xs font-extrabold uppercase tracking-widest text-zinc-400 mb-2">Your Name</label>
+                    <label className="block text-xs font-extrabold uppercase tracking-widest text-[var(--mut)] mb-2 font-mono">Your Name</label>
                     <input
                       type="text"
                       value={profile?.name || user?.displayName || user?.email?.split("@")[0] || newCommentName}
@@ -725,28 +752,35 @@ function BlogDetails({ blog }: { blog: any }) {
                       placeholder="John Doe"
                       required
                       readOnly={!!(profile?.name || user?.displayName)}
-                      className="w-full px-4 py-3 rounded-xl border border-[var(--ln)] bg-[var(--bg)] text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-[var(--ac)] focus:border-[var(--ac)] transition-all text-sm font-semibold read-only:bg-zinc-900 read-only:cursor-default"
+                      className="w-full px-4 py-3 rounded-xl border border-[var(--ln)] bg-[var(--bg)] text-[var(--fg)] placeholder:text-[var(--mut)] focus:outline-none focus:ring-1 focus:ring-[var(--ac)] focus:border-[var(--ac)] transition-all text-sm font-semibold read-only:opacity-70 read-only:cursor-default"
+                      style={{ fontFamily: 'var(--b)' }}
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-extrabold uppercase tracking-widest text-zinc-400 mb-2">Your Comment</label>
+                    <label className="block text-xs font-extrabold uppercase tracking-widest text-[var(--mut)] mb-2 font-mono">Your Comment</label>
                     <textarea
                       value={newCommentText}
                       onChange={e => setNewCommentText(e.target.value)}
                       placeholder="Share your thoughts..."
                       required
                       rows={4}
-                      className="w-full px-4 py-3 rounded-xl border border-[var(--ln)] bg-[var(--bg)] text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-[var(--ac)] focus:border-[var(--ac)] transition-all resize-none text-sm font-semibold"
+                      className="w-full px-4 py-3 rounded-xl border border-[var(--ln)] bg-[var(--bg)] text-[var(--fg)] placeholder:text-[var(--mut)] focus:outline-none focus:ring-1 focus:ring-[var(--ac)] focus:border-[var(--ac)] transition-all resize-none text-sm font-semibold"
+                      style={{ fontFamily: 'var(--b)' }}
                     />
                   </div>
-                  <button type="submit" disabled={isSubmitting} className="mt-2 self-start bg-[var(--ac)] text-white px-8 py-3.5 rounded-full font-bold hover:bg-[var(--a2)] transition-all shadow-[0_4px_20px_rgba(255,77,0,0.35)] hover:shadow-[0_8px_25px_rgba(255,77,0,0.5)] disabled:opacity-50 active:scale-[0.98] cursor-pointer text-sm">
+                  <button 
+                    type="submit" 
+                    disabled={isSubmitting} 
+                    className="mt-2 self-start btn px-8 py-3.5 text-sm cursor-pointer"
+                    style={{ fontFamily: 'var(--b)' }}
+                  >
                     {isSubmitting ? "Posting..." : "Post Comment"}
                   </button>
                 </form>
               ) : (
                 <div className="text-center py-4">
-                  <p className="text-zinc-400 font-semibold mb-4 text-sm">Sign in to join the discussion</p>
-                  <Link href={`/login?required=comment&redirect=${encodeURIComponent(typeof window !== "undefined" ? window.location.pathname : `/blogs/${blog.slug}`)}`} className="inline-block bg-[var(--ac)] text-white px-8 py-3.5 rounded-full font-bold hover:bg-[var(--a2)] transition-all shadow-[0_4px_20px_rgba(255,77,0,0.35)] text-sm">
+                  <p className="text-[var(--mut)] font-semibold mb-4 text-sm" style={{ fontFamily: 'var(--b)' }}>Sign in to join the discussion</p>
+                  <Link href={`/login?required=comment&redirect=${encodeURIComponent(typeof window !== "undefined" ? window.location.pathname : `/blogs/${blog.slug}`)}`} className="btn inline-flex px-8 py-3.5 text-sm" style={{ fontFamily: 'var(--b)' }}>
                     Sign In to Comment
                   </Link>
                 </div>
@@ -759,19 +793,29 @@ function BlogDetails({ blog }: { blog: any }) {
             <div className="mt-16 pt-12 border-t border-[var(--ln)]">
               <div className="flex items-center gap-2 mb-2">
                 <Share2 size={14} className="text-[var(--ac)]" />
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--ac)]">More Reads</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--ac)] font-mono">More Reads</span>
               </div>
-              <h2 className="text-2xl font-[850] font-display text-white tracking-tight mb-8">You might also like</h2>
+              <h2 
+                className="text-2xl sm:text-3xl font-extrabold text-[var(--fg)] tracking-tight mb-8"
+                style={{ fontFamily: 'var(--d)' }}
+              >
+                You might also like
+              </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {relatedPosts.map((post: any) => (
-                  <Link key={post._id || post.id} href={`/blogs/${post.slug}`} className="group flex flex-col gap-3 p-5 rounded-[24px] border border-[var(--ln)] bg-[var(--cd)] hover:border-[var(--ac)]/50 hover:shadow-lg transition-all">
+                  <Link key={post._id || post.id} href={`/blogs/${post.slug}`} className="group flex flex-col gap-3 p-5 rounded-[24px] border border-[var(--ln)] bg-[var(--cd)] hover:border-[var(--ac)]/60 hover:shadow-lg transition-all">
                     {post.featuredImage && (
-                      <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden bg-zinc-900">
-                        <Image src={post.featuredImage} alt={post.title} fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width: 640px) 100vw, 33vw" />
+                      <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden bg-[var(--bg)] border border-[var(--ln)]/50">
+                        <Image src={post.featuredImage} alt={post.title} fill className="object-cover object-top group-hover:scale-105 transition-transform duration-300" sizes="(max-width: 640px) 100vw, 33vw" />
                       </div>
                     )}
-                    <span className="text-[10px] font-extrabold uppercase tracking-widest text-[var(--ac)]">{post.categoryName || post.category?.name || "Article"}</span>
-                    <h3 className="text-sm font-bold text-white leading-snug group-hover:text-[var(--ac)] transition-colors line-clamp-2">{post.title}</h3>
+                    <span className="text-[10px] font-extrabold uppercase tracking-widest text-[var(--ac)] font-mono">{post.categoryName || post.category?.name || "Article"}</span>
+                    <h3 
+                      className="text-base font-bold text-[var(--fg)] leading-snug group-hover:text-[var(--ac)] transition-colors line-clamp-2"
+                      style={{ fontFamily: 'var(--d)' }}
+                    >
+                      {post.title}
+                    </h3>
                   </Link>
                 ))}
               </div>

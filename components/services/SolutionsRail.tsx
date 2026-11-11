@@ -1,261 +1,281 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 
-interface Service {
+interface Offering {
+  id: string;
   number: string;
   title: string;
+  category: string;
   href: string;
-  img: string;
-  imgAlt: string;
-  tag: string;
+  tagline: string;
+  metric: string;
 }
 
-const SERVICES: Service[] = [
+const OFFERINGS: Offering[] = [
   {
+    id: '01',
     number: '01',
-    title: 'Website Development',
+    title: 'WEBSITE DEVELOPMENT',
+    category: 'Web & UI Architecture',
     href: '/services/website-development',
-    img: '/svc-web.jpg',
-    imgAlt: 'Responsive web experience interface composition',
-    tag: 'Web & UI Architecture',
+    tagline: 'High-conversion digital flagships built with Next.js, bespoke motion & headless performance.',
+    metric: '99.8% Perf Score',
   },
   {
+    id: '02',
     number: '02',
-    title: 'SEO',
+    title: 'SEARCH ENGINE OPTIMIZATION',
+    category: 'Search Visibility',
     href: '/services/search-engine-optimization',
-    img: '/svc-seo.jpg',
-    imgAlt: 'Search visibility and keyword data visualization',
-    tag: 'Search Visibility',
+    tagline: 'Technical architecture, semantic indexing, and high-intent programmatic visibility.',
+    metric: '+310% Organic Reach',
   },
   {
+    id: '03',
     number: '03',
-    title: 'Content',
+    title: 'CONTENT STRATEGY & COPY',
+    category: 'Copy & Editorial',
     href: '/services/content-strategy-creation',
-    img: '/svc-content.jpg',
-    imgAlt: 'Editorial document and copy planning',
-    tag: 'Copy & Editorial',
+    tagline: 'Precision positioning, editorial narrative engineering, and conversion-focused copy systems.',
+    metric: '4.2× Engagement',
   },
   {
+    id: '04',
     number: '04',
-    title: 'Performance Marketing',
+    title: 'PERFORMANCE MARKETING',
+    category: 'Acquisition & ROI',
     href: '/services/performance-marketing',
-    img: '/svc-performance.jpg',
-    imgAlt: 'Campaign performance dashboard and analytics',
-    tag: 'Acquisition & ROI',
+    tagline: 'Full-funnel acquisition, paid media scaling, algorithmic creative loops, and ROAS engineering.',
+    metric: '3.8× Avg. Return',
   },
   {
+    id: '05',
     number: '05',
-    title: 'Custom Development',
+    title: 'CUSTOM AI & SYSTEMS',
+    category: 'Custom Technology',
     href: '/services/custom-technology-development',
-    img: '/svc-dev.jpg',
-    imgAlt: 'Custom application code and backend systems interface',
-    tag: 'Custom AI & Systems',
+    tagline: 'Scalable cloud backends, intelligent workflow integrations, and bespoke technology architectures.',
+    metric: 'Zero-Latency Ops',
+  },
+  {
+    id: '06',
+    number: '06',
+    title: 'BRAND STRATEGY & IDENTITY',
+    category: 'Identity Systems',
+    href: '/services/website-development',
+    tagline: 'Category-defining market positioning, typographic systems, design tokens, and visual languages.',
+    metric: 'Signature Identity',
+  },
+  {
+    id: '07',
+    number: '07',
+    title: 'E-COMMERCE ARCHITECTURE',
+    category: 'Omnichannel Scale',
+    href: '/services/website-development',
+    tagline: 'Headless storefronts, friction-free checkout loops, and long-term retention engines.',
+    metric: '+42% AOV Boost',
+  },
+  {
+    id: '08',
+    number: '08',
+    title: 'CREATIVE & ART DIRECTION',
+    category: 'Visual Storytelling',
+    href: '/services/content-strategy-creation',
+    tagline: 'Cinematic brand media, interactive 3D motion, and avant-garde editorial execution.',
+    metric: 'Award-Grade Motion',
+  },
+  {
+    id: '09',
+    number: '09',
+    title: 'AND MORE...',
+    category: 'Holistic Partnership',
+    href: '/contact',
+    tagline: 'Bespoke hybrid solutions tailored for ambitious brands ready to lead their category.',
+    metric: '100% Tailored',
   },
 ];
 
 export default function SolutionsRail() {
   const sectionRef = useRef<HTMLElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+  
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isClient, setIsClient] = useState(false);
+
+  // 3D Cylinder geometry calculations
+  const renderWheel = useCallback((currentPos: number, isMobile = false) => {
+    const R = isMobile ? 260 : 360; // Cylinder radius in pixels
+    const stepDeg = isMobile ? 28 : 25; // Degrees per item
+
+    for (let i = 0; i < OFFERINGS.length; i++) {
+      const el = itemRefs.current[i];
+      if (!el) continue;
+
+      const d = i - currentPos;
+      const theta = d * stepDeg;
+
+      // If item is on the back hemisphere of the cylinder, hide it
+      if (Math.abs(theta) > 85) {
+        el.style.visibility = 'hidden';
+        el.style.opacity = '0';
+        el.style.pointerEvents = 'none';
+        continue;
+      }
+
+      const rad = (theta * Math.PI) / 180;
+      const y = R * Math.sin(rad);
+      const z = R * (Math.cos(rad) - 1);
+      const rotX = -theta;
+      const scale = 0.65 + 0.35 * Math.cos(rad);
+      const opacity = Math.pow(Math.max(0, Math.cos(rad)), 2.2);
+
+      const isActive = Math.abs(d) < 0.45;
+
+      el.style.visibility = 'visible';
+      el.style.transform = `translate3d(-50%, calc(-50% + ${y}px), ${z}px) rotateX(${rotX}deg) scale(${scale})`;
+      el.style.opacity = `${opacity}`;
+      el.style.pointerEvents = isActive ? 'auto' : 'none';
+      el.style.zIndex = `${Math.round(100 - Math.abs(d) * 10)}`;
+
+      if (isActive) {
+        el.setAttribute('data-active', 'true');
+      } else {
+        el.removeAttribute('data-active');
+      }
+    }
+  }, []);
 
   useEffect(() => {
-    const run = async () => {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      if (window.innerWidth < 1024) return; // Desktop pin only
+    setIsClient(true);
+    let ctx: any;
+
+    const setup = async () => {
+      if (typeof window === 'undefined') return;
+
+      const isMobile = window.innerWidth < 768;
+      renderWheel(0, isMobile);
+
+      // Reduced motion fallback: don't pin, simply render
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return;
+      }
 
       const { gsap } = await import('gsap');
       const { ScrollTrigger } = await import('gsap/ScrollTrigger');
       gsap.registerPlugin(ScrollTrigger);
 
-      if (!trackRef.current || !triggerRef.current) return;
+      if (!triggerRef.current) return;
 
-      const track = trackRef.current;
-      const getScrollAmount = () => -(track.scrollWidth - window.innerWidth + 120);
+      ctx = gsap.context(() => {
+        let lastIdx = 0;
 
-      const ctx = gsap.context(() => {
-        gsap.to(track, {
-          x: getScrollAmount,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: triggerRef.current,
-            start: 'top top',
-            end: '+=250%',
-            pin: true,
-            scrub: 0.8,
-            invalidateOnRefresh: true,
-            onUpdate: (self) => {
-              const idx = Math.min(
-                Math.floor(self.progress * SERVICES.length),
-                SERVICES.length - 1
-              );
+        ScrollTrigger.create({
+          trigger: triggerRef.current,
+          start: 'top top',
+          end: isMobile ? '+=220%' : '+=300%',
+          pin: true,
+          scrub: 0.7,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            const pos = self.progress * (OFFERINGS.length - 1);
+            const mobileNow = window.innerWidth < 768;
+            renderWheel(pos, mobileNow);
+
+            const idx = Math.min(
+              Math.max(0, Math.round(pos)),
+              OFFERINGS.length - 1
+            );
+            if (idx !== lastIdx) {
+              lastIdx = idx;
               setActiveIndex(idx);
-            },
+            }
           },
         });
       }, triggerRef);
-
-      return () => ctx.revert();
     };
 
-    run();
-  }, []);
+    setup();
+
+    return () => {
+      if (ctx) ctx.revert();
+    };
+  }, [renderWheel]);
+
+  const activeService = OFFERINGS[activeIndex] || OFFERINGS[0];
 
   return (
     <section
       ref={sectionRef}
       id="solutions"
-      className="w-full bg-[var(--bg)] text-[var(--fg)] relative overflow-hidden"
-      aria-label="Our Solutions"
+      className="w-full bg-[var(--bg)] text-[var(--fg)] relative border-t border-b border-[var(--ln)] overflow-hidden"
+      aria-label="Our Offerings"
     >
-      {/* ── DESKTOP PINNED HORIZONTAL RAIL CONTAINER ── */}
-      <div ref={triggerRef} className="hidden lg:flex flex-col justify-between w-full h-screen max-h-screen pt-24 pb-12 box-border">
-        <div className="max-w-[1440px] w-full mx-auto px-16 flex items-end justify-between shrink-0 mb-4">
-          <div>
-
-            <h2
-              className="text-[var(--fg)] font-bold leading-[0.95] tracking-[-0.04em]"
-              style={{
-                fontSize: 'clamp(40px, 4.5vw, 68px)',
-                fontFamily: 'var(--d)',
-              }}
-            >
-              Everything You Need<br />
-              <span className="text-[var(--ac)]">to Grow Digitally.</span>
-            </h2>
-          </div>
-
-          {/* Active Service Counter & Progress indicator */}
-          <div className="flex flex-col items-end gap-3 pb-2">
-            <div className="flex items-center gap-3">
-              <span className="text-[12px] font-mono font-bold text-[var(--ac)]">
-                0{activeIndex + 1}
-              </span>
-              <span className="text-[11px] text-[var(--mut)] uppercase tracking-wider font-semibold">
-                / 05 &mdash; {SERVICES[activeIndex]?.title}
-              </span>
-            </div>
-            {/* Horizontal progress bar */}
-            <div className="w-48 h-[2px] bg-[var(--ln)] relative overflow-hidden rounded-full">
-              <div
-                className="absolute left-0 top-0 bottom-0 bg-[var(--ac)] transition-all duration-300 rounded-full"
-                style={{ width: `${((activeIndex + 1) / SERVICES.length) * 100}%` }}
-              />
-            </div>
-          </div>
+      {/* ── PINNED SECTION CONTAINER ── */}
+      <div
+        ref={triggerRef}
+        className="w-full min-h-screen flex flex-col justify-between relative overflow-hidden py-10 sm:py-14 box-border select-none"
+      >
+        {/* Top Header */}
+        <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 flex flex-col items-center text-center shrink-0 z-20">
+          <div className="ey mb-2">OUR OFFERINGS</div>
+          <h2
+            className="text-[28px] sm:text-[40px] lg:text-[48px] font-extrabold text-[var(--fg)] tracking-[-0.03em] leading-[1.08] max-w-2xl"
+            style={{ fontFamily: 'var(--d)' }}
+          >
+            Everything You Need <span className="text-[var(--ac)]">to Grow Digitally.</span>
+          </h2>
         </div>
 
-        {/* Horizontal track */}
-        <div className="w-full overflow-hidden flex-1 flex items-center">
-          <div
-            ref={trackRef}
-            className="flex items-start gap-10 px-16 will-change-transform"
-          >
-            {SERVICES.map((svc, i) => {
-              const isActive = i === activeIndex;
+        {/* ── 3D CYLINDRICAL DRUM STAGE ── */}
+        <div
+          ref={stageRef}
+          className="w-full flex-1 h-[480px] sm:h-[580px] lg:h-[660px] relative flex items-center justify-center overflow-hidden my-auto"
+          style={{
+            perspective: '1200px',
+            perspectiveOrigin: '50% 50%',
+            transformStyle: 'preserve-3d',
+          }}
+        >
+          {/* Top & bottom gradient vignettes for deep cylindrical fade */}
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-32 sm:h-44 bg-gradient-to-b from-[var(--bg)] via-[var(--bg)]/80 to-transparent z-20" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 sm:h-44 bg-gradient-to-t from-[var(--bg)] via-[var(--bg)]/80 to-transparent z-20" />
+
+          {/* Central subtle horizon glow line */}
+          <div className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 h-[1px] bg-gradient-to-r from-transparent via-[var(--ac)]/25 to-transparent z-10" />
+
+          {/* The Offerings on the 3D Wheel */}
+          <div className="w-full max-w-[1440px] h-full relative" style={{ transformStyle: 'preserve-3d' }}>
+            {OFFERINGS.map((svc, i) => {
               return (
                 <Link
-                  key={svc.number}
+                  key={svc.id}
                   href={svc.href}
+                  ref={(el) => { itemRefs.current[i] = el; }}
                   data-cursor
-                  data-cursor-label="VIEW"
-                  className={`group relative shrink-0 w-[380px] flex flex-col cursor-pointer transition-all duration-500 ${
-                    isActive ? 'opacity-100 scale-100' : 'opacity-40 hover:opacity-85 scale-[0.97]'
-                  }`}
+                  data-cursor-label="EXPLORE"
+                  className="absolute left-1/2 top-1/2 will-change-transform text-center whitespace-nowrap cursor-pointer transition-colors duration-300 group block focus:outline-none"
+                  style={{
+                    transformOrigin: '50% 50%',
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                  }}
                 >
-                  {/* Image container - uniform size for all cards */}
-                  <div className="relative overflow-hidden aspect-[16/11] w-full bg-[var(--cd)] rounded-xl mb-4 shadow-sm border border-[var(--ln)]">
-                    <Image
-                      src={svc.img}
-                      alt={svc.imgAlt}
-                      fill
-                      sizes="400px"
-                      className="object-cover grayscale transition-transform duration-700 ease-out group-hover:scale-[1.05]"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500" />
-                    
-                    {/* Floating badge inside image */}
-                    <div className="absolute top-4 left-4 bg-[var(--cd)]/90 backdrop-blur-md px-3 py-1 rounded-full border border-[var(--ln)]">
-                      <span className="text-[10px] font-semibold text-[var(--fg)] uppercase tracking-wider">
-                        {svc.tag}
-                      </span>
-                    </div>
-
-                    {/* Arrow badge bottom right */}
-                    <div className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-[var(--cd)]/90 backdrop-blur-md flex items-center justify-center text-[var(--fg)] group-hover:bg-[var(--ac)] group-hover:text-white transition-all duration-300 shadow-sm border border-[var(--ln)]">
-                      <span className="text-[15px] group-hover:translate-x-0.5 transition-transform">→</span>
-                    </div>
-                  </div>
-
-                  {/* Meta & Title */}
-                  <div className="flex flex-col">
-                    <span className="text-[11px] font-semibold text-[var(--mut)] font-mono mb-1">
-                      {svc.number}
-                    </span>
-                    <h3
-                      className={`font-bold tracking-tight text-[var(--fg)] transition-all duration-300 ${
-                        isActive ? 'text-[22px]' : 'text-[20px] group-hover:text-[var(--ac)]'
-                      }`}
-                      style={{ fontFamily: 'var(--d)' }}
-                    >
-                      {svc.title}
-                    </h3>
-                  </div>
+                  <span
+                    className="block font-extrabold tracking-[-0.03em] uppercase transition-colors duration-300 text-[var(--fg)] group-hover:text-[var(--ac)] group-data-[active=true]:text-[var(--fg)] text-[32px] sm:text-[50px] md:text-[64px] lg:text-[80px] leading-none"
+                    style={{ fontFamily: 'var(--d)' }}
+                  >
+                    {svc.title}
+                  </span>
                 </Link>
               );
             })}
           </div>
         </div>
       </div>
-
-      {/* ── MOBILE VERTICAL FALLBACK (No scroll-jacking) ── */}
-      <div className="block lg:hidden px-8 py-16">
-        <div className="mb-10">
-
-          <h2
-            className="text-[#111] font-bold leading-[0.95] tracking-[-0.04em]"
-            style={{
-              fontSize: 'clamp(34px, 7vw, 56px)',
-              fontFamily: 'var(--font-plus-jakarta-sans)',
-            }}
-          >
-            Everything You Need<br />
-            to Grow Digitally.
-          </h2>
-        </div>
-
-        <div className="flex flex-col gap-10">
-          {SERVICES.map((svc) => (
-            <Link key={svc.number} href={svc.href} className="flex flex-col group">
-              <div className="relative overflow-hidden aspect-[4/3] w-full bg-[#E5E5E2] rounded-xl mb-4 shadow-sm border border-[rgba(17,17,17,0.06)]">
-                <Image
-                  src={svc.img}
-                  alt={svc.imgAlt}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover grayscale"
-                />
-                <div className="absolute top-3 left-3 bg-white/90 px-3 py-1 rounded-full">
-                  <span className="text-[10px] font-semibold text-[#111]">{svc.tag}</span>
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <div>
-                  <span className="text-[10px] text-[#888] font-mono block mb-0.5">{svc.number}</span>
-                  <h3 className="text-[20px] font-bold text-[#111]" style={{ fontFamily: 'var(--font-plus-jakarta-sans)' }}>
-                    {svc.title}
-                  </h3>
-                </div>
-                <span className="text-[18px] text-[#111]">→</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
     </section>
   );
 }
-
