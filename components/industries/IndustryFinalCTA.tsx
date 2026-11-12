@@ -10,6 +10,7 @@ export default function IndustryFinalCTA() {
 
   return (
     <section
+      id="industry-final-cta"
       className="py-20 sm:py-28 lg:py-32 px-6 sm:px-10 lg:px-16 relative overflow-hidden"
       style={{ background: 'var(--bg)' }}
     >

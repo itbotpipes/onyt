@@ -6,32 +6,11 @@ import { INDUSTRIES_PAGE_DATA } from './industriesData';
 export default function IndustryProcess() {
   const { process } = INDUSTRIES_PAGE_DATA;
   const sectionRef = useRef<HTMLElement>(null);
-  const pathRef = useRef<SVGPathElement>(null);
-
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el || !pathRef.current) return;
-
-    const path = pathRef.current;
-    const len = path.getTotalLength?.() || 800;
-    path.style.strokeDasharray = `${len}`;
-    path.style.strokeDashoffset = `${len}`;
-
-    const handleScroll = () => {
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight || 800;
-      const progress = Math.max(0, Math.min(1, (vh - rect.top) / (rect.height + vh * 0.4)));
-      path.style.strokeDashoffset = `${len * (1 - progress)}`;
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   return (
     <section
       ref={sectionRef}
+      id="growth-process"
       className="py-24 sm:py-28 lg:py-36 px-6 sm:px-10 lg:px-16 border-b border-[var(--ln)] relative overflow-hidden"
       style={{ background: 'var(--bg)' }}
     >
@@ -88,16 +67,6 @@ export default function IndustryProcess() {
                 strokeWidth="1.5"
                 strokeDasharray="4 6"
               />
-
-              {/* Animated glowing active path */}
-              <path
-                ref={pathRef}
-                d="M 120 220 Q 380 230, 600 120 T 1080 230"
-                stroke="url(#processPathGrad)"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                filter="url(#processGlow)"
-              />
             </svg>
           </div>
 
@@ -108,7 +77,8 @@ export default function IndustryProcess() {
             <div className="rv flex flex-col items-start md:pt-16">
               <div className="flex items-center gap-3 mb-5">
                 <div
-                  className="w-9 h-9 rounded-full border border-[var(--ac)] flex items-center justify-center text-xs font-mono font-bold shadow-[0_0_12px_rgba(255,77,0,0.3)]"
+                  data-step="1"
+                  className="step-badge w-9 h-9 rounded-full border border-[var(--ac)] flex items-center justify-center text-xs font-mono font-bold shadow-[0_0_12px_rgba(255,77,0,0.3)] transition-all duration-300"
                   style={{ background: 'color-mix(in srgb, var(--cd) 80%, transparent)', color: 'var(--ac)' }}
                 >
                   {process.steps[0].number}
@@ -133,8 +103,9 @@ export default function IndustryProcess() {
             <div className="rv flex flex-col items-start md:pt-2">
               <div className="flex items-center gap-3 mb-5">
                 <div
-                  className="w-9 h-9 rounded-full border border-[var(--ac)] flex items-center justify-center text-white text-xs font-mono font-bold shadow-[0_0_16px_var(--ac)]"
-                  style={{ background: 'var(--ac)' }}
+                  data-step="2"
+                  className="step-badge w-9 h-9 rounded-full border border-[var(--ac)] flex items-center justify-center text-xs font-mono font-bold shadow-[0_0_12px_rgba(255,77,0,0.3)] transition-all duration-300"
+                  style={{ background: 'color-mix(in srgb, var(--cd) 80%, transparent)', color: 'var(--ac)' }}
                 >
                   {process.steps[1].number}
                 </div>
@@ -158,7 +129,8 @@ export default function IndustryProcess() {
             <div className="rv flex flex-col items-start md:pt-20">
               <div className="flex items-center gap-3 mb-5">
                 <div
-                  className="w-9 h-9 rounded-full border border-[var(--ac)] flex items-center justify-center text-xs font-mono font-bold shadow-[0_0_12px_rgba(255,77,0,0.3)]"
+                  data-step="3"
+                  className="step-badge w-9 h-9 rounded-full border border-[var(--ac)] flex items-center justify-center text-xs font-mono font-bold shadow-[0_0_12px_rgba(255,77,0,0.3)] transition-all duration-300"
                   style={{ background: 'color-mix(in srgb, var(--cd) 80%, transparent)', color: 'var(--ac)' }}
                 >
                   {process.steps[2].number}

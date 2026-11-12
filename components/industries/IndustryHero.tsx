@@ -22,7 +22,7 @@ export default function IndustryHero() {
   }, []);
 
   return (
-    <section className="ind-hero">
+    <section id="hero" className="ind-hero">
       {/* Background ambient warm radiant light bleed */}
       <div
         className="absolute inset-0 pointer-events-none transition-transform duration-700 ease-out z-0"
@@ -77,7 +77,7 @@ export default function IndustryHero() {
             filter="blur(24px)"
           />
 
-          {/* Broad atmospheric soft arc */}
+          {/* Broad atmospheric soft arc (Ambient aura beneath continuous line) */}
           <path
             d="M 160 700 C 440 660, 780 380, 980 110"
             stroke="url(#heroArcGrad)"
@@ -86,26 +86,6 @@ export default function IndustryHero() {
             opacity="0.14"
             filter="blur(18px)"
           />
-
-          {/* Core sharp laser arc */}
-          <path
-            d="M 160 700 C 440 660, 780 380, 980 110"
-            stroke="url(#heroArcGrad)"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            filter="url(#arcGlow)"
-          />
-
-          {/* Glowing Focal Node at (980, 110) */}
-          <g>
-            <circle cx="980" cy="110" r="34" fill="url(#nodeGlow)" opacity="0.45" />
-            <circle cx="980" cy="110" r="8" fill="var(--ac)" />
-            <circle cx="980" cy="110" r="3.5" fill="#ffffff" />
-            <circle cx="980" cy="110" r="16" stroke="var(--ac)" strokeWidth="1" opacity="0.6">
-              <animate attributeName="r" values="8;24;8" dur="3s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.8;0;0.8" dur="3s" repeatCount="indefinite" />
-            </circle>
-          </g>
         </svg>
       </div>
 

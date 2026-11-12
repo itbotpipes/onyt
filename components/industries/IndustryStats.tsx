@@ -8,6 +8,7 @@ export default function IndustryStats() {
 
   return (
     <section
+      id="industry-stats"
       className="py-24 sm:py-28 lg:py-32 px-6 sm:px-10 lg:px-16 border-b border-[var(--ln)] relative"
       style={{ background: 'var(--bg)' }}
     >

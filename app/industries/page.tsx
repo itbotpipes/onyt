@@ -13,6 +13,7 @@ import IndustryStats from '@/components/industries/IndustryStats';
 import IndustryCaseStudies from '@/components/industries/IndustryCaseStudies';
 import IndustryFAQSection from '@/components/industries/IndustryFAQSection';
 import IndustryFinalCTA from '@/components/industries/IndustryFinalCTA';
+import ContinuousKineticLine from '@/components/industries/ContinuousKineticLine';
 
 export default function IndustriesPage() {
   return (
@@ -25,7 +26,10 @@ export default function IndustriesPage() {
       {/* Global studio navbar */}
       <Nav />
 
-      <main id="main-content" style={{ background: 'var(--bg)', color: 'var(--fg)', minHeight: '100vh' }}>
+      <main id="main-content" className="relative" style={{ background: 'var(--bg)', color: 'var(--fg)', minHeight: '100vh' }}>
+        {/* Continuous Scroll-Driven Kinetic Line System */}
+        <ContinuousKineticLine />
+
         {/* 1. HERO */}
         <IndustryHero />
 

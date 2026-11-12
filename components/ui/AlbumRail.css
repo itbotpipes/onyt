@@ -1,0 +1,346 @@
+.album-rail {
+  --rail-size: clamp(220px, 28vh, 290px);
+  --rail-aspect: 1;
+  --rail-radius: 20px;
+  --rail-shadow: 1;
+  --rail-accent: var(--ac, #ff4d00);
+  width: 100%;
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg, #f5f4f0);
+  box-sizing: border-box;
+  outline-offset: -4px;
+  padding: 0;
+  margin: 0;
+}
+
+.album-rail * {
+  box-sizing: border-box;
+}
+
+/* ── 3D PERSPECTIVE STAGE (AMPLE VERTICAL HEADROOM) ── */
+.album-rail__stage {
+  position: relative;
+  width: 100%;
+  max-width: 1600px;
+  height: clamp(320px, 38vh, 400px);
+  perspective: 1100px;
+  perspective-origin: 50% 50%;
+  transform-style: preserve-3d;
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  overflow: visible;
+}
+
+.album-rail.is-dragging .album-rail__stage {
+  cursor: grabbing;
+}
+
+/* ── 3D ALBUM CARD CONTAINER ── */
+.album-rail__album {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  width: var(--rail-size);
+  aspect-ratio: var(--rail-aspect);
+  transform-style: preserve-3d;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity, filter;
+  backface-visibility: hidden;
+}
+
+/* ── SLEEVE CASING ── */
+.album-rail__sleeve {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--ln, rgba(255, 255, 255, 0.12));
+  padding: 0;
+  border-radius: var(--rail-radius);
+  background: var(--cd, #12110e);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 4px 20px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  backface-visibility: hidden;
+  transition: box-shadow 300ms ease, border-color 300ms ease;
+}
+
+/* ACTIVE CENTER CARD: Prominent Orange Glow & Elevated Shadow */
+.album-rail__album.is-active .album-rail__sleeve {
+  border-color: rgba(255, 77, 0, 0.85);
+  box-shadow: 0 35px 85px rgba(0, 0, 0, 0.95), 0 0 35px rgba(255, 77, 0, 0.38);
+}
+
+.album-rail__sleeve:hover {
+  border-color: rgba(255, 77, 0, 0.95);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 1), 0 0 40px rgba(255, 77, 0, 0.45);
+}
+
+.album-rail__sleeve img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  pointer-events: none;
+  filter: contrast(1.08) brightness(0.92);
+  transition: filter 300ms ease;
+}
+
+.album-rail__album.is-active .album-rail__sleeve img {
+  filter: contrast(1.12) brightness(1.05);
+}
+
+/* Sheen reflection across the glass sleeve */
+.album-rail__sleeve-shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.22) 0%, transparent 35%, transparent 65%, rgba(0, 0, 0, 0.45) 100%);
+}
+
+/* Studio Number Badge on Sleeve */
+.album-rail__sleeve-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  font-family: var(--b, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--ac, #ff4d00);
+}
+
+.album-rail__image-fallback {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #1f1d19, #080706);
+  color: white;
+  padding: 22px;
+  font: 700 20px/1.2 var(--d, sans-serif);
+  text-align: center;
+}
+
+/* ── CAPTIONS (FOCUSED SECTOR CONTENT - AMPLE CLEARANCE) ── */
+.album-rail__caption-area {
+  width: min(94%, 720px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 16px;
+  min-height: 85px;
+  position: relative;
+  z-index: 20;
+}
+
+.album-rail__caption {
+  width: 100%;
+  padding: 2px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.album-rail__caption h3 {
+  margin: 0;
+  font-family: var(--d, sans-serif);
+  font-size: clamp(24px, 2.7vw, 36px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--fg, #f5f4f0);
+}
+
+.album-rail__caption p {
+  margin: 4px 0 8px;
+  font-family: var(--b, sans-serif);
+  font-size: clamp(13px, 1vw, 15px);
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--mut, #8f8b82);
+  max-width: 560px;
+}
+
+.album-rail__tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.album-rail__tag {
+  font-family: var(--b, sans-serif);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 11px;
+  border-radius: 9999px;
+  border: 1px solid var(--ln, rgba(255, 255, 255, 0.12));
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--fg, #f5f4f0);
+  letter-spacing: 0.02em;
+}
+
+.album-rail__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--b, sans-serif);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ac, #ff4d00);
+  padding: 4px 14px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 77, 0, 0.35);
+  background: rgba(255, 77, 0, 0.08);
+  transition: all 200ms ease;
+  margin-top: 2px;
+}
+
+.album-rail__cta:hover {
+  background: var(--ac, #ff4d00);
+  color: white;
+  border-color: var(--ac, #ff4d00);
+  box-shadow: 0 0 14px rgba(255, 77, 0, 0.4);
+  transform: translateY(-1px);
+}
+
+/* ── CONTROLS & SCRUBBER ── */
+.album-rail__controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(10px, 2vw, 20px);
+  width: min(100%, 540px);
+  margin-top: 6px;
+  position: relative;
+  z-index: 20;
+}
+
+.album-rail__arrow {
+  color: var(--fg, #f5f4f0);
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--ln, rgba(255, 255, 255, 0.12));
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.03);
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.album-rail__arrow:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.28);
+  transform: scale(1.05);
+}
+
+.album-rail__arrow:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.album-rail__scrubber {
+  position: relative;
+  flex: 1 1 220px;
+  max-width: 300px;
+  min-width: 90px;
+  height: 34px;
+  cursor: ew-resize;
+  touch-action: none;
+}
+
+.album-rail__scrubber-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background: var(--ln, rgba(255, 255, 255, 0.15));
+  translate: 0 -50%;
+  border-radius: 9999px;
+}
+
+.album-rail__scrubber-mark {
+  position: absolute;
+  top: 50%;
+  width: 3px;
+  height: 9px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.35);
+  translate: -50% -50%;
+  pointer-events: none;
+}
+
+.album-rail__scrubber-thumb {
+  position: absolute;
+  top: 50%;
+  width: 6px;
+  height: 22px;
+  border-radius: 4px;
+  background: var(--rail-accent, #ff4d00);
+  translate: -50% -50%;
+  box-shadow: 0 0 10px rgba(255, 77, 0, 0.7);
+  pointer-events: none;
+}
+
+.album-rail__scrubber.is-scrubbing .album-rail__scrubber-thumb {
+  height: 28px;
+  box-shadow: 0 0 16px rgba(255, 77, 0, 0.95);
+}
+
+.album-rail button:focus-visible,
+.album-rail__scrubber:focus-visible {
+  outline: 2px solid var(--rail-accent, #ff4d00);
+  outline-offset: 4px;
+}
+
+.album-rail__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: none;
+}
+
+@media (max-width: 768px) {
+  .album-rail__stage {
+    height: 280px;
+  }
+  .album-rail__controls {
+    gap: 8px;
+  }
+  .album-rail__scrubber {
+    min-width: 65px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .album-rail__sleeve {
+    transition: none !important;
+  }
+}

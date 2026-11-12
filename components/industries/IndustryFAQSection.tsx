@@ -14,6 +14,7 @@ export default function IndustryFAQSection() {
 
   return (
     <section
+      id="industry-faqs"
       className="py-24 sm:py-28 lg:py-36 px-6 sm:px-10 lg:px-16 border-b border-[var(--ln)] relative"
       style={{ background: 'var(--bg)' }}
     >
